@@ -1,0 +1,4877 @@
+Problem Statement:
+Your are given a positive integer k.
+Your task is to find the geometric sum i.e. 1 + 1/2 + 1/4 + 1/8 + _______ + 1/(2^k)
+Note: Use recursion to implement your solution.
+Your task is to complete function geometricSum with following parameters passed:
+integer k: k is a positive integer defines the limit up to which you have to find the geometric sum.
+Function returns:
+float : Return the geometric sum i.e. as real number.
+
+Constraints to be followed:
+0 <= k <= 100
+Sample test case 1:
+Input:
+3 // value of k
+Output:
+1.875000 // geometric sum up to 5 decimal places
+Sample test case 2:
+Input:
+4
+Output:
+1.937500
+Brief editorial: in test case 1 geometric sum will be calculated as: 1+ 1/(2^1) + 1/(2^2) + 1/(2^3) = 1.875
+
+
+
+import java.util.*;
+class HelloWorld {
+    public static float sum(int k) {
+        if (k == 0) {
+            return 1;
+        }
+        return 1.0f/(float)Math.pow(2, k) + sum(k - 1);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int k = sc.nextInt();
+        float sum = geometricSum(k);
+        System.out.printf("%.5f",sum);
+    }
+}
+
+
+-----------------------------------------------------
+
+
+
+Problem Statement:
+A Rover sent to moon wants to move in a research area land in form grid of size M x N. (M- Rows N- Columns). Rover starts from (0,0) coordinates and it has to reach to destination (M-1,N-1) coordinates. 
+Note: Rover can only move right or down. 
+You have to compute the total number of ways rover can reach the destination.
+Complete the function RoverWalk with parameters:
+integer M,N : It specifies the the Number of rows and columns in the area grid.
+
+Function returns:
+integer: the count of number of possible ways for rover to reach (0,0) to (M-1,N-1) destination coordinates.
+Note: Both M and N may be equal or not (i.e grid can be square as well as rectangular in shape
+
+Constraints to be followed:
+1 <= M,N <=500
+Sample testcase 1:
+Input:
+2 2
+Output:
+2
+Sample testcase 2:
+Input:
+5 5
+Output:
+70
+
+
+//dp
+ public int roverPaths(int m, int n) {
+        int dp[][] = new int[m][n];
+        for(int i=0; i<m; i++)
+        dp[i][0] = 1;
+        for(int j=0; j<n; j++)
+        dp[0][j] = 1;
+        for(int i=1; i<m; i++){
+            for(int j=1; j<n; j++){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+
+//recursion
+public int roverPaths(int m, int n) {
+    return countPaths(m - 1, n - 1);
+}
+
+private int countPaths(int i, int j) {
+    if (i == 0 || j == 0)
+        return 1;
+    return countPaths(i - 1, j) + countPaths(i, j - 1);
+}
+
+worst 2^n
+
+----------------------------------------------------------------
+
+Problem 1: On A Cube
+A solid cube of 10 cm x 10cm x 10 cm rests on the ground. It has a beetle on it, and some sweet honey spots at various locations on the surface of the cube. The beetle starts at a point on the surface of the cube, and goes to the honey spots in order along the surface of the cube.
+Problem Description
+A solid cube of 10 cm x 10cm x 10 cm rests on the ground. It has a beetle on it, and some sweet honey spots at various locations on the surface of the cube. The beetle starts at a point on the surface of the cube, and goes to the honey spots in order along the surface of the cube.
+1. If it goes from a point to another point on the same face (say X to Y), it goes in an arc of a circle that subtends an angle of 60 degrees at the centre of the circle
+2. If it goes from one point to another on a different face, it goes by the shortest path on the surface of the cube, except that it never travels along the bottom of the cube
+The beetle is a student of Cartesian geometry, and knows the coordinates (x, y, z) of all the points it needs to go to. The origin of coordinates it uses is one corner of the cube on the ground, and the z axis points up. Hence, the bottom surface (on which it does not crawl) is z=0, and the top surface is z=10. The beetle keeps track of all the distances travelled, and rounds the distance travelled to two decimal places once it reaches the next spot, so that the final distance is a sum of the rounded distances from spot to spot.
+
+
+Input
+The first line gives an integer N, the total number of points (including the starting point) the beetle visits
+The second line is a set of 3N comma separated non-negative numbers, with up to two decimal places each. These are to be interpreted in groups of three as the x, y, z coordinates of the points the beetle needs to visit in the given order.
+Output
+One line with a number giving the total distance travelled by the beetle accurate to two decimal places. Even if the distance travelled is an integer, the output should have two decimal places.
+Constraints
+None of the points the beetle visits is on the bottom face (z=0) or on any of the edges of the cube (the lines where two faces meet)
+2<=N<=10
+Time Limit (secs)
+1
+Example 1
+Input
+3
+1,1,10,2,1,10,0,1,9
+Output
+4.05
+Explanation
+There are three points visited by the beetle (N=3). The beetle starts on the top face of the cube (z=10) at point (1,1,10) and goes to another point on the same face (2,1,10). Though the straight line distance is 1, it travels on the arc of a circle subtending an angle of 60 degrees at the centre of the circle, and hence travels (2*pi)/6 or 1.05 (note that it rounds the distance at each leg of the journey). It then travels from (2,1,10) on the face z=10 to (0,1,9) on the face x=0 along the surface of the cube. This is a distance of 3. The total distance travelled is 1.05+3=4.05. The output is 4.05
+Example 2
+Input
+3
+1,1,10,2,1,10,0,5,9
+Output
+6.05
+Explanation
+There are three points visited by the beetle (N=3). The beetle starts on the top face of the cube (z=10) at point (1,1,10) and goes to another point on the same face (2,1,10). As before. This distance is 1.05. It then travels from (2,1,10) on the face z=10 to (0,5,9) on the face x=0 along the surface of the cube. The shortest distance on the surface of the cube between these points is 5. The total distance travelled is 1.05+5=6.05. The output is 6.05.
+
+
+import java.util.*;
+import java.lang.*;
+class Main {
+        final static float PI = 3.14f;
+        static int sX, sY, sZ;
+        private static float distance(int x, int y, int z){
+            float dist = 0.0f;
+            if(sZ==z && (sX==x || sY==y) && sZ!=0){
+                if(sX!=x){
+                    dist = (2*PI*Math.abs(sX-x))/6.0f;
+                }
+                else{
+                    dist = (2*PI*Math.abs(sY-y))/6.0f;
+                }
+            }
+            else{
+                dist = (int)Math.sqrt(Math.pow(x-sX,2) + Math.pow(y-sY,2)) + Math.abs(z-sZ);
+            }
+            sX = x;
+            sY = y;
+            sZ = z;
+            return dist;
+        }
+        public static void main(String[] args){
+            int n;
+            int cube[] = new int[30];
+            float sum = 0.0f;
+            Scanner sc = new Scanner(System.in);
+            n = sc.nextInt();
+            n *= 3;
+            for(int i=0; i<n; i++){
+                cube[i] = sc.nextInt();
+            }
+            sX = cube[0];
+            sY = cube[1];
+            sZ = cube[2];
+            for(int i=3; i<n; i+=3){
+                sum += distance(cube[i], cube[i+1], cube[i+2]);
+            }
+        System.out.printf("%.2f",sum);
+        }
+}
+
+----------------------------------------------------------------------------------------
+
+
+Three characters { #, *, . } represents a constellation of stars and galaxies in space. Each galaxy is demarcated by # characters. There can be one or many stars in a given galaxy. Stars can only be in the shape of vowels { A, E, I, O, U }. A collection of * in the shape of the vowels is a star. A star is contained in a 3×3 block. Stars cannot be overlapping. The dot(.) character denotes empty space.
+Given 3xN matrix comprising of { #, *, . } character, find the galaxy and stars within them.
+Note: Please pay attention to how vowel A is denoted in a 3×3 block in the examples section below.
+Constraints
+• 3 <= N <= 10^5
+Input
+• Input consists of a single integer N denoting the number of columns.
+Output
+• The output contains vowels (stars) in order of their occurrence within the given galaxy. The galaxy itself is represented by the # character.
+Example 1
+Input
+18
+* . * # * * * # * * * # * * * . * .
+* . * # * . * # . * . # * * * * * *
+* * * # * * * # * * * # * * * * . *
+Output
+U#O#I#EA
+Explanation
+As it can be seen that the stars make the image of the alphabets U, O, I, E, and A respectively.
+Example 2
+Input
+12
+* . * # . * * * # . * .
+* . * # . . * . # * * *
+* * * # . * * * # * . *
+Output
+U#I#A
+Explanation
+As it can be seen that the stars make the image of the alphabet U, I, and A.
+Possible solution:
+Input:
+12
+* . * # . * * * # . * .
+* . * # . . * . # * * *
+* * * # . * * * # * . *
+
+Code:
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        char[][] mat = new char[3][N];
+        sc.nextLine();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < N; j++) {
+                mat[i][j] = sc.next().charAt(0);
+            }
+        }
+        for (int i = 0; i < N; i++) {
+            if (mat[0][i] == '#' && mat[1][i] == '#' && mat[2][i] == '#') {
+                System.out.print('#');
+            }
+            else if (mat[0][i] == '.' && mat[1][i] == '.' && mat[2][i] == '.') {
+            }
+            else {
+                char a, b, c, a1, b1;
+                char c1, a2, b2, c2;
+                int x1 = i;
+                a = mat[0][x1];
+                b = mat[0][x1 + 1];
+                c = mat[0][x1 + 2];
+                a1 = mat[1][x1];
+                b1 = mat[1][x1 + 1];
+                c1 = mat[1][x1 + 2];
+                a2 = mat[2][x1];
+                b2 = mat[2][x1 + 1];
+                c2 = mat[2][x1 + 2];
+                if (a == '.' && b == '*' && c == '.' && a1 == '*' && b1 == '*' && c1 == '*' && a2 == '*' && b2 == '.' && c2 == '*') {
+                    System.out.print("A");
+                    i+=2;
+                }
+                if (a == '*' && b == '*' && c == '*' && a1 == '*' && b1 == '*' && c1 == '*' && a2 == '*' && b2 == '*' && c2 == '*') {
+                    System.out.print("E");
+                    i+=2;
+                }
+                if (a == '*' && b == '*' && c == '*' && a1 == '.' && b1 == '*' && c1 == '.' && a2 == '*' && b2 == '*' && c2 == '*') {
+                    System.out.print("I");
+                    i+=2;
+                }
+                if (a == '*' && b == '*' && c == '*' && a1 == '*' && b1 == '.' && c1 == '*' && a2 == '*' && b2 == '*' && c2 == '*') {
+                    System.out.print("O");
+                    i+=2;
+                }
+                if (a == '*' && b == '.' && c == '*' && a1 == '*' && b1 == '.' && c1 == '*' && a2 == '*' && b2 == '*' && c2 == '*') {
+                    System.out.print("U");
+                    i+=2;
+                }
+            }
+        }
+    }
+}
+
+-------------------------------------------------------------------------------
+
+well formed parantheses
+
+import java.util.*;
+class Main {
+        public static List<String> genParen(int n) {
+        List<String> res = new ArrayList<>();
+        util("",0,0,n,res);
+        return res;     
+    }
+    public static void util(String curr, int l, int r, int m, List<String> res){
+        if(curr.length()==m*2)
+        {
+            res.add(curr);
+            return;
+        }
+        if(l<m)
+        util(curr+"(", l+1,r,m,res);
+        if(r<l)
+        util(curr+")",l,r+1,m,res);
+    }
+        public static void main(String[] args){
+            int n;
+            Scanner sc=new Scanner(System.in);
+            n=sc.nextInt();
+           List<String> ans =genParen(n);
+           for(String i: ans){
+               System.out.print(i+" ");
+           }
+        }
+}
+
+---------------------------------------------------------------------------------------
+
+phone-no-combination
+
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        List<String> res = letterCombinations(s);
+        System.out.println(res);
+    }
+    public static List<String> letterCombinations(String dig) {
+        List<String> res = new ArrayList<>();
+        if (dig == null || dig.length() == 0) {
+            return res;
+        }
+        String[] pad = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+        rec(res, pad, dig, 0, new StringBuilder());
+        return res;
+    }
+    private static void rec(List<String> res, String[] pad, String dig, int i, StringBuilder curr) {
+        if (i == dig.length()) {
+            res.add(curr.toString());
+            return;
+        }
+        int d = dig.charAt(i) - '0';
+        String lett = pad[d];
+        for (char j : lett.toCharArray()) {
+            curr.append(j);
+            rec(res, pad, dig, i + 1, curr);
+            curr.deleteCharAt(curr.length() - 1);
+        }
+    }
+}
+
+
+---------------------------------------------------------------------------------------
+
+combination-sum
+
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        int x = sc.nextInt();
+        List<List<Integer>> result = combinationSum(arr, x);
+        for (List<Integer> i:result) {
+            System.out.println(i);
+        }
+    }
+    public static List<List<Integer>> combinationSum(int[] arr, int x) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> curr = new ArrayList<>();
+        backtrack(res, curr, arr, x, 0, 0);
+        return res;
+    }
+    private static void backtrack(List<List<Integer>> res, List<Integer> curr, int[] arr, int x, int sum, int start) {
+        if (sum == x) {
+            res.add(new ArrayList<>(curr));
+            return;
+        }
+        if(sum > x) return;
+        for (int i = start; i < arr.length; i++) {
+            curr.add(arr[i]);
+            backtrack(res, curr, arr, x, sum + arr[i], i);
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+
+a concrete class containing 2 static methods, 2 asbtract methods and an instance method
+
+---------------------------------------------------------------------------------------------
+
+greedy - move 0 to end o(n2)
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+       int[] a={0,1,0,3,2};
+       /*for(int i=0;i<4;i++){
+           for(int j=0;j<5-i-1;j++){
+               if(a[j]==0){
+                   int t=a[j];
+                   a[j]=a[j+1];
+                   a[j+1]=t;
+               }
+           }
+       }*/
+       for(int i=4;i>=1;i--){
+           for(int j=0;j<i;j++){
+               if(a[j]==0){
+                   int t=a[j];
+                   a[j]=a[j+1];
+                   a[j+1]=t;
+               }
+           }
+       }
+       for(int i=0;i<5;i++)
+       System.out.print(a[i]+" ");
+    }
+}
+
+(or)
+
+2 pointer
+
+ int[] a={0,1,0,3,2};
+       int j=0;
+       for(int i=0;i<5;i++){
+           if(a[i]!=0) {
+               int t=a[i];
+               a[i]=a[j];
+               a[j]=t;
+               j++;
+           }
+       }
+
+----------------------------------------------------------------------------------------
+
+
+2-sum(one sol)
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+       Arrays.sort(a);
+       int t=sc.nextInt();
+       int l=0,r=n-1;
+       while(l<r){
+           int s=a[l]+a[r];
+           if(s==t)
+           {
+               System.out.print(l+" "+r);
+               System.exit(0);
+           }
+           else if(s<t) l++;
+           else r--;
+       }
+    }
+}
+
+2-sum(mul sol)
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+        int t=sc.nextInt();
+        Arrays.sort(a);
+        int l=0,r=n-1;
+         List<List<Integer>> res=new ArrayList<>();
+        while (l<r) {
+            int s=a[l]+a[r];
+            if (s==t){
+                res.add(Arrays.asList(a[l],a[r])); 
+                l++;
+                r--;
+                }
+            else if(s<t) l++;
+            else r--;
+        }
+        for (List<Integer> i:res) {
+            System.out.println(i);
+        }
+}
+}
+
+
+-----------------------------------------------------------------------------------------
+
+reverse right by k times
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+       int k=sc.nextInt();
+       k=k%n;
+       rev(a,0,n-k-1);
+       rev(a,n-k,n-1);
+       rev(a,0,n-1);
+       for(int i=0;i<n;i++)
+       System.out.print(a[i]+" ");
+    }
+    private static void rev(int a[],int l, int r){
+        while(l<r){
+            int t=a[l];
+            a[l]=a[r];
+            a[r]=t;
+            l++;
+            r--;
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------
+
+ to break a egg, Gorilla is often used on the roof of N-storey building and throw down eggs. Once a cute Gorilla , who are tired of climbing on the roof and decided to find the lowest floor, the drop from which the egg is broken. The Gorilla can climb to any floor from 1 to N-th (the roof is (N +1)-th floor) and throw a egg in the window. If the egg does not break if dropped, a Gorilla can use it to experiment again. All in all Gorillas for experiments prepared K eggs. The Gorilla has to figure out the number of the desired floor, using no more than K eggs. Also, the Gorilla wants to find a floor for the minimum number of throws, so it can carry only one egg, and for every shot she has to go down to the ground prepared for the experiments of egg or previously abandoned, but not broken egg.
+Write a program that will make a plan of experiments, minimizing the number of shots in the worst case. The plan should take into account that the required floor can be any floor from 1 to N, and it may be that egg is broken only when falling from the roof.
+
+Input layout
+
+The first line of the input file contains two integers, separated by a space - the number of floors N and the number of eggs K .
+
+Output layout
+
+The first line of the output file display one integer - the minimum number of tests in the worst case.
+
+code:
+
+import java.util.*;
+
+public class EggDropping {
+
+    public int calculate(int eggs, int floors) {
+        int[][] T = new int[eggs + 1][floors + 1];
+        
+        // Base case: If there is only one egg, we need to test each floor
+        for (int i = 0; i <= floors; i++) {
+            T[1][i] = i;
+        }
+
+        for (int e = 2; e <= eggs; e++) {
+            for (int f = 1; f <= floors; f++) {
+                T[e][f] = Integer.MAX_VALUE;
+                for (int k = 1; k <= f; k++) {
+                    int c = 1 + Math.max(T[e - 1][k - 1], T[e][f - k]);
+                    if (c < T[e][f]) {
+                        T[e][f] = c;
+                    }
+                }
+            }
+        }
+        return T[eggs][floors];
+    }
+
+    public int calculateRecursive(int eggs, int floors) {
+        if (eggs == 1) {
+            return floors;
+        }
+        if (floors == 0) {
+            return 0;
+        }
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i <= floors; i++) {
+            int val = 1 + Math.max(calculateRecursive(eggs - 1, i - 1), calculateRecursive(eggs, floors - i));
+            if (val < min) {
+                min = val;
+            }
+        }
+        return min;
+    }
+
+    public static void main(String args[]) {
+        EggDropping ed = new EggDropping();
+        int result = ed.calculate(2, 11);
+        System.out.println("Minimum number of tests (DP): " + result);
+    }
+}
+
+
+[or]
+
+
+import java.util.*;
+public class Main {
+    public static int gorEgg(int k,int n){
+        //no floor no trial, single floor single trial
+if(n==0||n==1) return n;
+if( k==1)
+return n;
+// consider all dropings from 1st floor to kth floor and
+// you have to return the minimum of these values
+int result =0;
+int min = Integer.MAX_VALUE;
+for( int i = 1 ; i<=n ; i++) {
+result = Math.max(gorEgg(k - 1, i - 1),gorEgg(k, n - i));
+min = Math.min(min, result);
+}
+return min + 1;
+}
+    public static void main(String[] args) {
+       Scanner sc=new Scanner(System.in);
+       int n=sc.nextInt();
+       int k=sc.nextInt();
+       System.out.print(gorEgg(k,n));
+       }
+    }
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+max-window k subarray sum
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+        int k=sc.nextInt();
+         int max=0,curr=0;
+        for (int i=0;i<k;i++) {
+            curr+=a[i];
+        }
+        max=curr;
+        for (int i=k;i<n;i++) {
+            curr+=a[i]-a[i-k];
+            max=Math.max(max,curr);
+        }
+System.out.print(max);
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+kadane's algorithm for contiguous sum
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+        int maxSoFar=Integer.MIN_VALUE, maxEndHere=0;
+        for(int i:a){
+    maxEndHere+=i;
+if(maxEndHere>maxSoFar)
+maxSoFar=maxEndHere;
+if(maxEndHere<0)
+maxEndHere=0;
+        }
+System.out.print(maxSoFar);
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+sieve of eratosthenes
+
+
+import java.util.*;
+
+public class SieveOfEratosthenes {
+    public static void main(String[] args) {
+        int n = 100;
+        List<Integer> primes = sieveOfEratosthenes(n);
+        System.out.println("Prime numbers up to " + n + ": " + primes);
+    }
+    
+    public static List<Integer> sieveOfEratosthenes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+
+        List<Integer> primes = new ArrayList<>();
+        for (int p = 2; p * p <= n; p++) {
+            if (isPrime[p]) {
+                for (int i = p * p; i <= n; i += p) {
+                    isPrime[i] = false;
+                }
+            }
+        }
+
+        for (int i = 2; i <= n; i++) {
+            if (isPrime[i]) {
+                primes.add(i);
+            }
+        }
+
+        return primes;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------
+
+KMP using LPS
+
+
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        String s=sc.nextLine();
+        String p=sc.nextLine();
+        int lps[]=new int[p.length()];
+        int l=0,i=1; //lps[0]=0
+        while(i<p.length()){
+            if(p.charAt(i)==p.charAt(l)){
+                l++;
+                lps[i++]=l;
+            }
+            else{
+                if(l>0){
+                    l=lps[l-1];
+                }
+                else{
+                    lps[i++]=l;
+                }
+            }
+        }
+        for(int j:lps){
+            System.out.print(j+" ");
+        }
+        System.out.println();
+        i=0;
+        int j=0;
+        while(i<s.length()){
+            if(s.charAt(i)==p.charAt(j)){
+                i++;
+                j++;
+            }
+            if(j==p.length()){
+                System.out.println(i-j);
+                j=lps[j-1];
+            }
+            else if(i<s.length()&&s.charAt(i)!=p.charAt(j)){
+                if(j==0)
+                i++;
+                else
+                j=lps[j-1];
+            }
+        }
+    }
+}
+
+-----------------------------------------------------------------------------------------------
+
+string permutations (n*n!)
+
+import java.util.*;
+
+public class StringPermutations {
+    public static void main(String[] args) {
+        String str = "abc";
+        List<String> permutations = generatePermutations(str);
+        System.out.println("Permutations of '" + str + "': " + permutations);
+    }
+
+    public static List<String> generatePermutations(String str) {
+        List<String> permutations = new ArrayList<>();
+        char[] chars = str.toCharArray();
+        generatePermutationsHelper(chars, 0, chars.length - 1, permutations);
+        return permutations;
+    }
+
+    private static void generatePermutationsHelper(char[] chars, int l, int r, List<String> permutations) {
+        if (l == r) {
+            permutations.add(new String(chars));
+            return;
+        }
+
+        for (int i = l; i <= r; i++) {
+            swap(chars, l, i);
+            generatePermutationsHelper(chars, l + 1, r, permutations);
+            swap(chars, l, i); // Backtrack to restore the original order
+        }
+    }
+
+    private static void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------
+
+Ashish was copying from Rahit in the exam. So, Rahit told him to change the answers a little bit so that the examiner cannot find the fraud. But silly Ashish in the way started to change all the answers that were needed. He shuffled the letters in each word in a way where the maximum number of letters were misplaced.
+For a given word, find the maximum difference that Ashish can generate between his answer and Rahit’s answer.
+Suppose Rahit wrote “car” for an answer, Ashish can write “acr” with difference 2, or “arc” with differnece 3.
+Note That: The letters are all in lowercase.
+Input Format:
+First line containing an integer n, number of words.
+Then, n numbers of lines as the query words.
+Output:
+N number of lines with an integer each denoting possible maximum difference.
+Sample Input:
+4
+abababa
+bbj
+kj
+kk
+Sample Output:
+6
+2
+2
+0
+
+
+import java.util.*;
+public class Main {
+    public static int diff(String s1, String s2){
+        int c=0;
+        for(int i=0;i<s1.length();i++){
+            if(s1.charAt(i)!=s2.charAt(i)){
+                c++;
+            }
+        }
+        return c;
+    }
+    public static void swap(char[] s,int l,int r){
+        char t=s[l];
+        s[l]=s[r];
+        s[r]=t;
+    }
+    public static void util(char[] s,int l, int r,List<String> res){
+        if(l==r){
+            res.add(String.valueOf(s));
+            return;
+        }
+        for(int i=l;i<=r;i++){
+            swap(s,i,l);
+            util(s,l+1,r,res);
+            swap(s,i,l);
+        }
+    }
+
+    public static List<String> permutations(String s){
+        List<String> res=new ArrayList<>();
+        util(s.toCharArray(),0,s.length()-1,res);
+        return res;
+    }
+    public static int maxdiff(String s){
+        List<String> perm=permutations(s);
+        int max=0;
+        for(String i:perm){
+            max=Math.max(max,diff(s,i));
+        }
+        return max;
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        sc.nextLine();
+        for(int i=0;i<n;i++){
+            String s=sc.nextLine();
+            System.out.println(maxdiff(s));
+        }
+    }
+}
+
+-------------------------------------------------------------------------------------------------------------
+
+
+method overriding
+
+import java.util.*;
+class Vehicle {
+    private String type;
+    public Vehicle(String type) {
+        this.type = type;
+    }
+    public String getType() {
+        return type;
+    }
+    public String getSpec() {
+        return "this has passed all tests successfully.";
+    }
+}
+class Car extends Vehicle {
+    public Car() {
+        super("Car");
+    }
+    public String getSpec() {
+        return super.getSpec()+"\n"+getType()+" is tested";//override
+    }
+}
+public class VehicleTesting {
+    public static void main(String[] args) {
+        Vehicle car = new Car();
+        System.out.println(car.getSpec());
+    }
+}
+
+----------------------------------------------------------------------------------
+
+
+recrusion for ncr
+
+import java.util.*;
+class Main {
+public static int ncr(int n,int r){
+if(r==0) return 1;
+return n*ncr(n-1,r-1);
+}
+public static int fact(int n){
+if(n==0) return 1;
+return n*fact(n-1);
+}
+public static void main(String[] args) {
+Scanner sc=new Scanner(System.in);
+int n=sc.nextInt();
+int r=sc.nextInt();
+System.out.print(ncr(n,r)/fact(r));
+}
+}
+
+--------------------------------------------------------------------------------
+
+recursion for string palindrome
+
+import java.util.*;
+class Main {
+public static boolean pal(String s,int l,int r){
+if(l>=r) return true;
+if(s.charAt(l)!=s.charAt(r)) return false;
+return pal(s,l+1,r-1);
+}
+public static void main(String[] args) {
+Scanner sc=new Scanner(System.in);
+String s=sc.nextLine();
+if(pal(s,0,s.length()-1)){
+System.out.print("Palindrome");
+}
+else{
+System.out.print("Not Palindrome");
+}
+}
+}
+
+
+
+-------------------------------------------------------------------------------------
+
+
+Here is about to introduce a new kind of number system. Where instead of 10 digits there is 20, from a to t, all in small. Now a means 1, b means 2 and t means 20, thenn aa means 21. Now for a new number you have to print the decimal form it.
+Note that the letters in the input string will be lower case and from a to t.
+Input Format:
+Single line containing the string of new number system’s number
+Output Format:
+Single line denoting the integer with the same decimal value as the input string
+Sample input 1: e
+Sample Output: 5
+Sample Input 2: ac
+Sample Output: 23
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+       Scanner sc=new Scanner(System.in);
+       String s=sc.nextLine();
+       System.out.print(conv(s,0,s.length()-1));
+    }
+    public static int conv(String s,int i,int n) {
+        if(n<0) return 0;
+        return ((s.charAt(n)-'a'+1)* (int)Math.pow(20,i))+conv(s,i+1,n-1);
+    }
+}
+
+
+-----------------------------------------------------------------------------------------
+
+import java.util.*;
+
+public class Main {
+    public static List<String> rec(int n) {
+        List<String> res=new ArrayList<>();
+        util(res,n,1,0,"");
+        return res;
+    }
+    private static void util(List<String> res,int n,int i,int c,String curr) {
+        if (c==n) return;
+        String bin=Integer.toBinaryString(i);
+        if (!bin.contains("11")) {
+            res.add(bin);
+            c++;
+        }
+        util(res,n,i+1,c,bin);
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        for (String i:rec(n)) {
+            System.out.print(i+" ");
+        }
+    }
+}
+
+--------------------------------------------------------------------------
+
+array subset problem
+
+import java.util.*;
+class HelloWorld {
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int m=sc.nextInt();
+        int n=sc.nextInt();
+        if(m<n) System.out.print("not possib");
+        else{
+        int a1[]=new int[m];
+        int a2[]=new int[n];
+        for(int i=0;i<m;i++)
+        a1[i]=sc.nextInt();
+        for(int i=0;i<n;i++)
+        a2[i]=sc.nextInt();
+        Map<Integer,Integer> mp=new HashMap<>();
+        for(int i:a1){
+            mp.put(i,mp.getOrDefault(i,0)+1);
+        }
+        int f=0;
+         for (int i:a2) {
+            if (!mp.containsKey(i)||mp.get(i)==0) {
+                f=1;
+                break;
+            }
+            mp.put(i,mp.get(i)-1);
+        }
+        System.out.printf("%s",(f==0)?"true":"false");
+        }
+    }
+}
+
+---------------------------------------------------------------------------
+
+quads 
+
+import java.util.*;
+class Main {
+    static class Pair{
+        int a,b;
+        Pair(int a,int b){
+            this.a=a;
+            this.b=b;
+        }
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+        Map<Integer,Pair> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int s=a[i]+a[j];
+                if(!map.containsKey(s)){
+                    map.put(s,new Pair(i,j));
+                }
+                else{
+                    Pair p=map.get(s);
+                    System.out.println(p.a+","+p.b+" and "+i+","+j);
+                }
+            }
+        }
+    }
+}
+
+---------------------------------------------------------------------------
+
+reverse SLL
+
+import java.util.*;
+class Node{
+    int x;
+    Node next;
+    Node(int x){
+        this.x=x;
+    }
+}
+public class Main {
+    public static Node reverse(Node head){
+        Node curr=head;
+        Node prev=null;
+        Node next=null;
+        while(curr!=null){
+            next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+    public static void main(String[] args) {
+       Node head=new Node(1);
+       head.next=new Node(2);
+       head.next.next=new Node(3);
+       Node revHead=reverse(head);
+       while(revHead!=null){
+           System.out.print(revHead.x+" ");
+           revHead=revHead.next;
+       }
+    }
+}
+
+--------------------------------------------------------------------------------
+
+union and intersection of SLL
+
+
+import java.util.*;
+
+public class Main {
+
+    Node head; // global
+
+    class Node {
+        int data;
+        Node next;
+
+        Node(int d) {
+            data = d;
+            next = null;
+        }
+    }
+
+    void unionList(Node head1, Node head2) {
+        Node t1 = head1;
+        Node t2 = head2;
+        while (t1 != null) { // pushing list 1 data to the resultant list
+            push(t1.data);
+            t1 = t1.next;
+        }
+
+        while (t2 != null) {
+            if (!isPresent(head, t2.data)) {
+                push(t2.data);
+            }
+            t2 = t2.next;
+        }
+    }
+
+    void intersectionList(Node head1, Node head2) {
+        Node result = null;
+        Node t1 = head1;
+        while (t1 != null) {
+            if (isPresent(head2, t1.data)) {
+                push(t1.data);
+            }
+            t1 = t1.next;
+        }
+    }
+
+    void printList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    void push(int newData) { // insertion at the beginning as well as end
+        Node newNode = new Node(newData);
+        /*newNode.next = head;
+        head = newNode;*/
+        Node t = head;
+        if(t == null) { 
+            newNode.next = head;
+            head = newNode;
+        }
+        else {
+            while(t.next != null){
+                t = t.next;
+            }
+            t.next = newNode;
+        }
+    }
+
+    boolean isPresent(Node head, int d) {
+        Node t1 = head;
+        while (t1 != null) {
+            if (t1.data == d) {
+                return true;
+            }
+            t1 = t1.next;
+        }
+        return false;
+    }
+
+    // Driver code
+    public static void main(String args[]) {
+        Main list1 = new Main();
+        Main list2 = new Main();
+        Main uList = new Main();
+        Main iList = new Main();
+        Scanner sc = new Scanner(System.in);
+        int n1 = sc.nextInt();
+        for (int i = 0; i < n1; i++) {
+            int data = sc.nextInt();
+            list1.push(data);
+        }
+        int n2 = sc.nextInt();
+        for (int i = 0; i < n2; i++) {
+            int data = sc.nextInt();
+            list2.push(data);
+        }
+
+        iList.intersectionList(list1.head, list2.head);
+        uList.unionList(list1.head, list2.head);
+        
+        System.out.println("First list:");
+        list1.printList();
+        
+        System.out.println("Second list:");
+        list2.printList();
+        
+        System.out.println("Union:");
+        uList.printList();
+        
+        System.out.println("Intersection:");
+        iList.printList();
+    }
+}
+
+
+------------------------------------------------------------------------------------------
+
+
+SLL addition and subtraction with nodes being digits
+
+import java.util.*;
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+    }
+}
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int m = scanner.nextInt();
+        Node n1 = create(scanner, m);
+        int n = scanner.nextInt();
+        Node n2 = create(scanner, n);
+        Node result = subTwoLists(n1, n2);
+        print(result);
+    }
+    static Node addTwoLists(Node n1, Node n2) {
+        Node dummy = new Node(0);
+        Node tail = dummy;
+        Node rn1 = reverse(n1);
+        Node rn2 = reverse(n2);
+        int carry = 0;
+        while (rn1 != null || rn2 != null || carry != 0) {
+            int x = (rn1 != null) ? rn1.data : 0;
+            int y = (rn2 != null) ? rn2.data : 0;
+            int sum = x + y + carry;
+            int digit = sum % 10;
+            carry = sum / 10;
+            Node newNode = new Node(digit);
+            tail.next = newNode;
+            tail = tail.next;
+            rn1 = (rn1 != null) ? rn1.next : null;
+            rn2 = (rn2 != null) ? rn2.next : null;
+        }
+        Node res = dummy.next;
+        dummy.next = null;
+        Node res2=reverse(res);
+        Node curr=res2;
+        while(curr.next!=null&&curr.data==0){
+            curr=curr.next;
+        }
+        res2=curr;
+        return res2;
+    }
+    static Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+        Node next = null;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    static Node subTwoLists(Node l1, Node l2) {
+         l1 = reverse(l1);
+        l2 = reverse(l2);
+        Node dummy = new Node(0);
+        Node result = dummy;
+        Node p1 = l1, p2 = l2;
+        int borrow = 0;
+        while (p1 != null || p2 != null) {
+            int val1 = (p1 != null) ? p1.data : 0;
+            int val2 = (p2 != null) ? p2.data : 0;
+            int diff = val1 - val2 - borrow;
+            if (diff < 0) {
+                diff += 10;
+                borrow = 1;
+            } else {
+                borrow = 0;
+            }
+            result.next = new Node(diff);
+            result = result.next;
+            if (p1 != null) p1 = p1.next;
+            if (p2 != null) p2 = p2.next;
+        }
+        while (dummy.next != null && dummy.next.data == 0) {
+            dummy.next = dummy.next.next;
+        }
+        return reverse(dummy.next);
+    }
+    static Node create(Scanner scanner, int size) {
+        Node head = null;
+        Node tail = null;
+        for (int i = 0; i < size; i++) {
+            int data = scanner.nextInt();
+            Node newNode = new Node(data);
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+    static void print(Node head) {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+---------------------------------------------------------------------------------------
+
+P1: Given two sorted linked lists consisting of N and M nodes respectively. The task is to merge both of the lists (in place) and return the head of the merged list.
+Examples:
+Input: a: 5->10->15, b: 2->3->20
+Output: 2->3->5->10->15->20
+Input: a: 1->1, b: 2->4
+Output: 1->1->2->4
+
+import java.util.*;
+class Node {
+    int data;
+    Node next;
+    Node(int data) {
+        this.data = data;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int m = scanner.nextInt();
+        Node n1 = create(scanner, m);
+        int n = scanner.nextInt();
+        Node n2 = create(scanner, n);
+        Node result = mergeTwoLists(n1, n2);
+        print(result);
+    }
+    static Node mergeTwoLists(Node l1, Node l2){
+        Node dummy=new Node(0);
+        Node tail=dummy;
+        while(l1!=null&&l2!=null){
+            if(l1.data<l2.data){
+                tail.next=l1;
+                l1=l1.next;
+            }
+            else{
+                tail.next=l2;
+                l2=l2.next;
+            }
+            tail=tail.next;
+        }
+        tail.next=(l1!=null)?l1:l2;
+        Node res=dummy.next;
+        dummy.next=null;
+        return res;
+    }
+    static Node create(Scanner scanner, int size) {
+        Node head = null;
+        Node tail = null;
+        for (int i = 0; i < size; i++) {
+            int data = scanner.nextInt();
+            Node newNode = new Node(data);
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+    static void print(Node head) {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data);
+            if(current.next!=null)
+            System.out.print("->");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+-----------------------------------------------------------------------------------
+
+P2: Given a matrix. Convert it into a linked list matrix such that each node is connected to its next right and down node.
+Input : 2D matrix
+1 2 3
+4 5 6
+7 8 9
+Output :
+1 -> 2 -> 3 -> NULL
+| | |
+v v v
+4 -> 5 -> 6 -> NULL
+| | |
+v v v
+7 -> 8 -> 9 -> NULL
+| | |
+v v v
+NULL NULL NULL
+
+import java.util.*;
+public class Main {
+    static class Node {
+        int v;
+        List<Node> neighbors;
+        Node(int v) {
+            this.v=v;
+            this.neighbors=new ArrayList<>();
+        }
+    }
+    public static List<List<Node>> createAdjList(int a[][]) {
+        int n=a.length;
+        List<List<Node>> adjList=new ArrayList<>();
+        Node[][] nodes=new Node[n][n];
+        for (int i=0; i<n; i++) {
+            adjList.add(new ArrayList<>());
+            for (int j=0; j<n; j++) {
+                nodes[i][j]=new Node(a[i][j]);
+            }
+        }
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                Node curr=nodes[i][j];
+                if (j<n-1) {
+                    curr.neighbors.add(nodes[i][j+1]);
+                }
+                if (i<n-1) {
+                    curr.neighbors.add(nodes[i+1][j]);
+                }
+                adjList.get(i).add(curr);
+            }
+        }
+        return adjList;
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[][] = new int[n][n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                a[i][j] = sc.nextInt();
+            }
+        }
+        List<List<Node>> adjList = createAdjList(a);
+        for (int i=0; i<adjList.size();i++) {
+            List<Node> row = adjList.get(i);
+            for (Node node : row) {
+                System.out.print(node.v + " -> ");
+            }
+            System.out.println("null");
+        }
+        for(int i=0;i<n;i++){
+            System.out.print("|    ");
+        }
+        System.out.println();
+        for(int i=0;i<n;i++){
+            System.out.print("v    ");
+        }
+        System.out.println();
+        for(int i=0;i<n;i++){
+            System.out.print("null ");
+        }
+    }
+}
+
+
+---------------------------------------------------------------------------------------
+
+P3:
+Given K sorted linked lists of size N each, the task is to merge them all maintaining their sorted order.
+Examples:
+Input: K = 3, N = 4
+list1 = 1->3->5->7->NULL
+list2 = 2->4->6->8->NULL
+list3 = 0->9->10->11->NULL
+Output: 0->1->2->3->4->5->6->7->8->9->10->11
+Merged lists in a sorted order where every element is greater than the previous element.
+Input: K = 3, N = 3
+list1 = 1->3->7->NULL
+list2 = 2->4->8->NULL
+list3 = 9->10->11->NULL
+Output: 1->2->3->4->7->8->9->10->11
+Merged lists in a sorted order where every element is greater than the previous element
+
+--------------------------------------------------------------------------------------------
+
+SLL - prime or not (astronomically large integers)
+
+import java.util.*;
+class Node {
+    int data;
+    Node next;
+    Node(int data) {
+        this.data = data;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Node l = create(sc, n);
+        System.out.print(prime(l));
+    }
+    static boolean prime(Node head){
+        int n = 0;
+        while (head != null) {
+            n = n*10 + head.data;
+            head = head.next;
+        }
+        if(n==1) return false;
+        for (int i=2; i<=Math.sqrt(n); i++) {
+            if (n%i==0) return false;
+        }
+        return true;
+    }
+    static Node create(Scanner sc, int size) {
+        Node head=null;
+        Node tail=null;
+        for (int i=0; i<size; i++) {
+            int d = sc.nextInt();
+            Node newNode = new Node(d);
+            if (head == null){
+                head = newNode;
+                tail = newNode;
+            } else{
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+        return head;
+    }
+}
+
+----------------------------------------------------------------------------------
+
+BFS - Queue
+
+import java.util.*;
+class Tree{
+    int x;
+    Tree left;
+    Tree right;
+    Tree(int x){
+        this.x=x;
+    }
+}
+public class Main
+{
+    private static Tree construct(int a[],int l,int r){
+        if(l>r) return null;
+        int m=l+(r-l)/2;
+        if(a[m]==-1) return null;
+        Tree root=new Tree(a[m]);
+        root.left=construct(a,l,m-1);
+        root.right=construct(a,m+1,r);
+        return root;
+    }
+    private static void BFS(Tree root){
+        Queue<Tree> q=new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()){
+            Tree curr=q.poll();
+            System.out.print(curr.x+" ");
+            if(curr.left!=null) q.offer(curr.left);
+            if(curr.right!=null) q.offer(curr.right);
+        }
+    }
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("enter number of nodes: ");
+		int n=sc.nextInt();
+		int a[]=new int[n];
+		System.out.println("Enter inorder traversal of elements (-1 for null): ");
+		for(int i=0;i<n;i++)
+		a[i]=sc.nextInt();
+		Tree root=construct(a,0,n-1);
+		BFS(root);
+	}
+}
+
+
+---------------------------------------------------------------------------------
+
+DFS tree - in, pre, post
+
+import java.util.*;
+class Tree{
+    int x;
+    Tree left;
+    Tree right;
+    Tree(int x){
+        this.x=x;
+    }
+}
+public class Main
+{
+    private static Tree construct(){
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter root node: ");
+        int x=sc.nextInt();
+        if(x==-1) return null;
+        Tree root=new Tree(x);
+        Queue<Tree> q=new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()){
+            Tree curr=q.poll();
+            System.out.print("enter left child of "+curr.x+"(-1 for null): ");
+            int l=sc.nextInt();
+            if(l!=-1){
+                curr.left=new Tree(l);
+                q.offer(curr.left);
+            }
+            System.out.print("enter right child of "+curr.x+"(-1 for null): ");
+            int r=sc.nextInt();
+            if(r!=-1){
+                curr.right=new Tree(r);
+                q.offer(curr.right);
+            }
+        }
+        return root;
+    }
+    private static void preorder(Tree root){
+        if(root==null) return;
+        System.out.print(root.x+" ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+    private static void inorder(Tree root){
+        if(root==null) return;
+        inorder(root.left);
+        System.out.print(root.x+" ");
+        inorder(root.right);
+    }
+    private static void postorder(Tree root){
+        if(root==null) return;
+        postorder(root.left);
+        postorder(root.right);
+        System.out.print(root.x+" ");
+    }
+	public static void main(String[] args) {
+		Tree root=construct();
+		System.out.print("preorder: ");
+		preorder(root);
+		System.out.println();
+		System.out.print("inorder: ");
+		inorder(root);
+		System.out.println();
+		System.out.print("postorder: ");
+		postorder(root);
+	}
+}
+
+
+---------------------------------------------------------------------------------
+
+ Create a balanced BST using AVL concept of rotations.
+
+---------------------------------------------------------------------------------
+
+ Complete top view, left view and boundary view as well as zig zag traversal of a BST
+
+import java.util.*;
+
+public class Main {
+public static int d = 0;
+static class TreeNode { // Representing the node in the BST
+int val;
+TreeNode left, right;
+TreeNode( int x){
+val = x;
+left = right = null;
+}
+}
+
+public static void main( String args[]) {
+Scanner sc = new Scanner(System.in);
+TreeNode root = null;
+while(true) {
+System.out.println("Enter the data in the BST, type exit to terminate");
+String input = sc.nextLine();
+if(input.equals("exit")) {
+break;
+}
+int data = Integer.parseInt(input); // "22" ---> 22
+root = insertIntoBST(root, data);
+
+}
+
+List<Integer> inorder = inorderTraversal(root); // DFS using STACK --> recursion
+System.out.println("Inorder traversal: " + inorder );
+
+boolean isValid = isValidBST(root);
+System.out.println("is valid BST: " + isValid );
+List<Integer> levelorder = levelorderTraversal(root);
+System.out.println("levelorder traversal: " + levelorder ); // using queue --> iterative
+List<Integer> rightView = rightViewTraversal(root);
+System.out.println("right view traversal: " + rightView );
+System.out.println("Diameter is: " + diameterBST(root));
+// reverse level order
+// ZIG ZAG level order traversal
+// Boundry as well as top view of the tree also
+
+
+} // Driver code closed
+
+public static TreeNode insertIntoBST(TreeNode root, int value) {
+if(root == null) {
+return new TreeNode(value);
+}
+
+if( value < root.val) {
+root.left = insertIntoBST(root.left, value);
+}
+else {
+root.right = insertIntoBST(root.right, value);
+
+}
+
+return root;
+}
+
+
+public static List<Integer> inorderTraversal(TreeNode root){
+List<Integer> ls = new ArrayList<>();
+inorderUtility(root, ls);
+return ls;
+
+}
+
+public static void inorderUtility( TreeNode root, List<Integer> ls) {
+if(root != null) {
+inorderUtility(root.left, ls);
+ls.add(root.val);
+inorderUtility(root.right, ls);
+
+}
+}
+public static boolean isValidBST(TreeNode root) {
+return isValidBSTUtility(root, null, null);
+
+}
+
+public static boolean isValidBSTUtility(TreeNode root, Integer min, Integer max) {
+
+if(root == null) {
+return true;
+}
+if((min != null && root.val <= min ) || (max != null && root.val >= max)){
+return false;
+}
+
+return isValidBSTUtility(root.left, min, root.val) && isValidBSTUtility(root.right, root.val, max);
+
+
+}
+
+
+public static List<Integer> levelorderTraversal(TreeNode root){ // iterative
+
+List<Integer> ans = new ArrayList<>();
+if(root == null)
+return ans;
+
+Queue<TreeNode> q = new LinkedList<>();
+q.add(root);
+while(!q.isEmpty()) {
+TreeNode node = q.poll();
+ans.add(node.val);
+if(node.left != null) {
+q.add(node.left);
+}
+
+if(node.right != null) {
+q.add(node.right);
+}
+}
+return ans;
+
+}
+
+public static List<Integer> rightViewTraversal(TreeNode root) { 
+List<Integer> ans = new ArrayList<>();
+Queue<TreeNode> q = new LinkedList<>();
+if(root == null) { // tree is empty
+return ans;
+}
+q.add(root);
+while(!q.isEmpty()) {
+int size = q.size(); // here i am computing the size of the queue
+for( int i=0 ; i<size ; i++) {
+TreeNode temp = q.poll();
+if(i == size -1) {
+ans.add(temp.val);
+}
+if (temp.left != null) {
+q.add(temp.left);
+}
+if (temp.right != null) {
+q.add(temp.right);
+}
+}
+
+}
+return ans;
+}
+
+
+
+public static int diameterBST( TreeNode root) {
+
+System.out.println("Height of the tree : " + height(root));
+//height(root);
+return d;
+
+
+}
+public static int height(TreeNode root) { // recursive
+if ( root == null)
+return 0;
+int LH = height(root.left);
+int RH = height(root.right);
+int cd = LH + RH;
+d = Math.max(d, cd);
+return Math.max(LH, RH) + 1;
+
+
+}
+}
+
+--------------------------------------------------------------------------------
+
+import java.util.*;
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) {
+        this.val = val;
+        left = right = null;
+    }
+}
+public class BST {
+    TreeNode root;
+    public void insert(int key) {
+        root = insertNode(root, key);
+    }
+    private TreeNode insertNode(TreeNode root, int key) {
+        if (root == null) {
+            root = new TreeNode(key);
+            return root;
+        }
+        if (key < root.val) {
+            root.left = insertNode(root.left, key);
+        } else if (key > root.val) {
+            root.right = insertNode(root.right, key);
+        }
+        
+        return root;
+    }
+    public void printTopView() {
+        System.out.print("Top view of the BST: ");
+        util(root, 0, new HashSet<>());
+        System.out.println();
+    }
+    private void util(TreeNode root, int distance, Set<Integer> set) {
+        if (root == null) return;
+        if (!set.contains(distance)) {
+            System.out.print(root.val + " ");
+            set.add(distance);
+        }
+        util(root.left, distance - 1, set);
+        util(root.right, distance + 1, set);
+    }
+    public void printLeftView() {
+        System.out.print("Left view of the BST: ");
+        if (root == null) return;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (i == 0) {
+                    System.out.print(node.val + " ");
+                }
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+        }
+        System.out.println();
+    }
+    public void printRightView() {
+        System.out.print("Right view of the BST: ");
+        if (root == null) return;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (i == size - 1) {
+                    System.out.print(node.val + " ");
+                }
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+        }
+        System.out.println();
+    }
+    public void printReverseLevelOrder() {
+        System.out.print("Reverse level-order traversal of the BST: ");
+        if (root == null) return;
+        Queue<TreeNode> queue = new LinkedList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            stack.push(node);
+            if (node.right != null) queue.offer(node.right);
+            if (node.left != null) queue.offer(node.left);
+        }
+        while (!stack.isEmpty()) {
+            System.out.print(stack.pop().val + " ");
+        }
+        System.out.println();
+    }
+    public void printZigzagOrder() {
+        System.out.print("Zigzag order traversal of the BST: ");
+        if (root == null) return;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean reverse = false;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Deque<Integer> levelNodes = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (reverse) {
+                    levelNodes.addFirst(node.val);
+                } else {
+                    levelNodes.addLast(node.val);
+                }
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+            while (!levelNodes.isEmpty()) {
+                System.out.print(levelNodes.poll() + " ");
+            }
+            reverse = !reverse;
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BST bst = new BST();
+        System.out.println("enter bst (-1 to stop):");
+        int num;
+        while ((num = sc.nextInt()) != -1) {
+            bst.insert(num);
+        }
+        bst.printTopView();
+        bst.printLeftView();
+        bst.printRightView();
+        bst.printReverseLevelOrder();
+        bst.printZigzagOrder();
+    }
+}
+-------------------------------------------------------------------------------------------
+
+import java.util.*;
+class TreeNode {
+    int data,height;
+    TreeNode left, right;
+    TreeNode(int data) {
+        this.data = data;
+        left = right = null;
+        height=1;
+    }
+}
+public class Main{
+    TreeNode root;
+    public static int height(TreeNode root){
+        if(root==null) return 0;
+        return root.height;
+    }
+    public static int max(int a,int b){
+        return Math.max(a,b);
+    }
+    public static TreeNode rightRotation(TreeNode y){
+        TreeNode x=y.left;
+        TreeNode T2=x.right;
+        x.right=y;
+        y.left=T2;
+        y.height=max(height(y.left),height(y.right))+1;
+        x.height=max(height(x.left),height(x.right))+1;
+        return x;
+    }
+    public static TreeNode leftRotation(TreeNode x){
+        TreeNode y=x.right;
+        TreeNode T2=y.left;
+        y.left=x;
+        x.right=T2;
+        y.height=max(height(y.left),height(y.right))+1;
+        x.height=max(height(x.left),height(x.right))+1;
+        return y;
+    }
+    public static int getBalance(TreeNode root){
+        if(root==null) return 0;
+        return height(root.left)-height(root.right);
+    }
+    public static TreeNode insertBST(TreeNode root, int x){
+        if(root==null) return new TreeNode(x);
+        if(x<root.data){
+            root.left=insertBST(root.left,x);
+        }
+        else if(x>root.data){
+            root.right=insertBST(root.right,x);
+        }
+        else{
+            return root;
+        }
+        root.height=1+max(height(root.left),height(root.right));
+        int balance=getBalance(root);
+        if(balance>1 && x<root.left.data){
+            return rightRotation(root);
+        }
+        if(balance<-1&& x>root.right.data){
+            return leftRotation(root);
+        }
+        if(balance>1&&x>root.left.data){
+            root.left=leftRotation(root.left);
+            return rightRotation(root);
+        }
+        if(balance<-1&&x<root.right.data){
+            root.right=rightRotation(root.right);
+            return leftRotation(root);
+        }
+        return root;
+    }
+    public static void preorder(TreeNode root){
+        if(root!=null){
+            System.out.print(root.data+" ");
+            preorder(root.left);
+            preorder(root.right);
+        }
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        Main tree=new Main();
+        for(int i=0;i<n;i++){
+            tree.root=insertBST(tree.root,sc.nextInt());
+        }
+        System.out.println("Preorder");
+        preorder(tree.root);
+    }
+}
+
+----------------------------------------------------------------------------------
+
+segment tree for range min/range ma/lcm using T*logN
+
+import java.util.*;
+
+class Main {
+int st[];
+int mini(int a , int b) { // finding minimum
+return (a < b)? a: b;
+}
+
+int gMid( int si, int ei) { // finding the mid of ranges
+return si + (ei - si)/2;
+}
+
+int rangeMin(int n, int qs, int qe) { // main solution function to find range min
+
+if(qs < 0 || qe > n - 1 || qs > qe) {
+
+System.out.println("incorrect query");
+return -1;
+}
+int result = rangeMinUtility(0, n - 1, qs, qe, 0);
+return result;
+
+}
+
+int rangeMinUtility(int sa, int ea, int qs, int qe, int index) {
+
+// if the segment is part of the given range
+if(qs <= sa && qe >= ea) {
+return st[index];
+
+}
+
+// if segment is outside the query
+if(ea < qs || sa > qe ) {
+return Integer.MAX_VALUE;
+}
+
+int mid = gMid(sa, ea);
+
+return mini(rangeMinUtility(sa, mid, qs, qe, 2*index+1), rangeMinUtility(mid+1, ea, qs,qe, 2*index + 2));
+
+
+}
+void makingST(int arr[], int n) {
+int size = ( int ) Math.ceil(Math.log(n)/ Math.log(2));
+int stSize = 2*(int)Math.pow(2, size)- 1;
+st = new int[stSize];
+makingSTUtility(arr, 0, n - 1, 0);
+
+}
+int makingSTUtility(int arr[], int sa, int ea, int index) {
+
+if(sa == ea) {
+st[index]= arr[sa];
+return arr[sa];
+}
+int mid = gMid(sa, ea);
+st[index] = mini(makingSTUtility(arr,sa,mid, 2*index + 1), makingSTUtility(arr, mid+1,ea,2*index + 2 ));
+
+return st[index];
+
+
+
+}
+public static void main(String arg[]) {
+Scanner sc = new Scanner(System.in);
+Main sTree = new Main();
+
+int n = sc.nextInt();
+int a[] = new int[n];
+for( int i=0 ; i< n ; i++) {
+a[i] = sc.nextInt();
+}
+sTree.makingST(a, n);
+int TC = sc.nextInt();
+for(int i=1 ; i<= TC ; i++) {
+int qs = sc.nextInt();
+int qe = sc.nextInt();
+System.out.println("Range min: " + sTree.rangeMin(n, qs, qe));
+
+}
+}
+}
+
+------------------------------------------------------------------------------------------------
+
+GRPAH BFS DFS
+
+import java.util.*;
+class Main{
+    private int v;
+    private LinkedList<Integer> adj[];
+    @SuppressWarnings("unchecked")
+Main(int v){
+    this.v = v;
+    adj = (LinkedList<Integer>[])new LinkedList[v];
+    for(int i = 0; i < v; i++){
+        adj[i] = new LinkedList<Integer>();
+    }
+}
+    void addEdge(int x,int y){
+        adj[x].add(y);
+        adj[y].add(x); //--> UG
+    }
+    void bfs(int s){
+        boolean vis[]=new boolean[v];
+        LinkedList<Integer> q=new LinkedList<Integer>();
+        vis[s]=true;
+        q.add(s);
+        while(!q.isEmpty()){
+            s=q.poll();
+            System.out.print(s+" ");
+            Iterator<Integer> i=adj[s].listIterator();
+            while(i.hasNext()){
+                int n=i.next();
+                if(!vis[n]){
+                    vis[n]=true;
+                    q.add(n);
+                }
+            }
+        }
+    }
+    void dfs(int s){
+        boolean vis[]=new boolean[v];
+        util(s,vis);
+    }
+    void util(int s,boolean vis[]){
+        vis[s]=true;
+        System.out.print(s+" ");
+        Iterator<Integer> i=adj[s].listIterator();
+            while(i.hasNext()){
+                int n=i.next();
+                if(!vis[n]){
+                    util(n,vis);
+                }
+            }
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int v=sc.nextInt();
+        Main ob=new Main(v);
+        int e=sc.nextInt();
+        for(int i=0;i<e;i++){
+            int x=sc.nextInt();
+            int y=sc.nextInt();
+            ob.addEdge(x,y);
+        }
+        int s=sc.nextInt();
+        ob.dfs(s);
+    }
+}
+-----------------------------------------------------------------------------------------
+
+GFG
+
+You are a hiker preparing for an upcoming hike. You are given heights[][], a 2D array of size rows x columns, where heights[row][col] represents the height of cell (row, col). You are situated in the top-left cell, (0, 0), and you hope to travel to the bottom-right cell, (rows-1, columns-1) (i.e., 0-indexed). You can move up, down, left, or right, and you wish to find the route with minimum effort.
+
+Note: A route's effort is the maximum absolute difference in heights between two consecutive cells of the route.
+
+Example 1:
+
+Input:
+row = 3
+columns = 3 
+heights = [[1,2,2],[3,8,2],[5,3,5]]
+Output: 
+2
+Explaination: 
+The route 1->3->5->3->5 has a maximum absolute difference of 2 in consecutive cells. This is better than the route 1->2->2->2->5, where the maximum absolute difference is 3.
+
+class Solution {
+    public static int MinimumEffort(int r, int c, int[][] heights) {
+        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        int[][] cost = new int[r][c];
+        
+        // Initialize cost array with maximum values
+        for (int i = 0; i < r; i++) {
+            Arrays.fill(cost[i], Integer.MAX_VALUE);
+        }
+        
+        pq.offer(new int[]{0, 0, 0}); // {cost, row, col}
+        cost[0][0] = 0;
+        
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int currCost = curr[0];
+            int row = curr[1];
+            int col = curr[2];
+            
+            // Check all four directions
+            for (int[] dir : dirs) {
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
+                if (newRow >= 0 && newRow < r && newCol >= 0 && newCol < c) {
+                    int newCost = Math.max(currCost, Math.abs(heights[newRow][newCol] - heights[row][col]));
+                    if (newCost < cost[newRow][newCol]) {
+                        cost[newRow][newCol] = newCost;
+                        pq.offer(new int[]{newCost, newRow, newCol});
+                    }
+                }
+            }
+        }
+        
+        return cost[r - 1][c - 1];
+}
+}
+
+------------------------------------------------------------------------------------------
+
+UNION FIND TO DETECT CYCLE IN UG
+
+import java.util.*;
+class Main{
+    int V,E;
+    class edges{
+        int sv;
+        int dv;
+    }
+    edges edge[];
+    Main(int v,int e){
+        V=v;
+        E=e;
+        edge=new edges[e];
+        for(int i=0;i<e;i++){
+            edge[i]=new edges();
+        }
+    }
+    void union(int parent[], int x,int y){
+        parent[x]=y;
+    }
+    int find(int parent[], int index){
+        if(parent[index]==index){
+            return index;
+        }
+        return find(parent,parent[index]);
+    }
+    boolean hasCycle(Main m){
+        int parent[]=new int[m.V];
+        for(int i=1;i<m.V;i++){
+            parent[i]=i;
+        }
+        for(int i=0;i<m.E;i++){
+            int s=m.find(parent,m.edge[i].sv);
+            int d=m.find(parent,m.edge[i].dv);
+            if(s==d) return true;
+            m.union(parent,s,d);
+        }
+        return false;
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int V=sc.nextInt();
+        int E=sc.nextInt();
+        Main m=new Main(V,E);
+        for(int i=0;i<E;i++){
+            int x=sc.nextInt();
+            int y=sc.nextInt();
+            m.edge[i].sv=x;
+            m.edge[i].dv=y;
+        }
+        if(m.hasCycle(m)){
+            System.out.print("Has Cycle");
+        }
+        else{
+            System.out.print("No Cycle");
+        }
+    }
+}
+
+---------------------------------------------------------------------------------
+
+NUMBER OF ISLANDS - DFS
+
+import java.util.*;
+public class Main {
+    public int islands(int grid[][], int r, int c) {
+        int isl = 0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (grid[i][j] == 1) {
+                    isl++;
+                    vis(grid, i, j, r, c);
+                }
+            }
+        }
+        return isl;
+    }
+    public void vis(int g[][], int i, int j, int r, int c) {
+        if (i < 0 || i >= r || j < 0 || j >= c || g[i][j] == 0) {
+            return;
+        }
+        g[i][j] = 0;
+        vis(g, i + 1, j, r, c);     
+        vis(g, i - 1, j, r, c);     
+        vis(g, i, j + 1, r, c);     
+        vis(g, i, j - 1, r, c);     
+        vis(g, i + 1, j + 1, r, c); 
+        vis(g, i + 1, j - 1, r, c); 
+        vis(g, i - 1, j + 1, r, c); 
+        vis(g, i - 1, j - 1, r, c); 
+    }
+    public static void main(String[] args) {
+        Main m = new Main();
+        Scanner sc = new Scanner(System.in);
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+        int grid[][] = new int[x][y];
+        for(int i = 0; i < x; i++) {
+            for(int j = 0; j < y; j++) {
+                grid[i][j] = sc.nextInt();
+            }
+        }
+        System.out.println(m.islands(grid, x, y));
+    }
+}
+
+-----------------------------------------------------------------------------
+
+KRUSKALS ALGORITHM
+
+import java.util.*;
+class Main{
+    public static class Edge{
+        int src,dest,weight;
+        Edge(int s,int d,int w){
+            src=s;
+            dest=d;
+            weight=w;
+        }
+    }
+    public static void union(int parent[],int x, int y){
+        parent[x]=y;
+    }
+    public static int find(int parent[],int index){
+        if(parent[index]==index){
+            return index;
+        }
+        return find(parent,parent[index]);
+    }
+    public static void mstKruskals(int v, List<Edge> edges){
+        int n=0;
+        int j=0;
+        int parent[]=new int[v];
+        for(int i=0;i<v;i++){
+            parent[i]=i;
+        }
+        Edge result[]=new Edge[v-1];
+        edges.sort(Comparator.comparingInt(a->a.weight));
+        while(n<v-1 &&j<edges.size()){
+            Edge next=edges.get(j);
+            int s=find(parent,next.src);
+            int d=find(parent,next.dest);
+            if(s!=d){
+                result[n++]=next;
+                union(parent,s,d);
+            }
+            j++;
+        }
+        int mincost=0;
+        for(int i=0;i<n;i++){
+            System.out.println(result[i].src+" -> "+result[i].dest+" : "+result[i].
+            weight);
+            mincost+=result[i].weight;
+        }
+        System.out.print(mincost);
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int V=sc.nextInt();
+        int E=sc.nextInt();
+        List<Edge> edges=new ArrayList<Edge>();
+        for(int i=0;i<E;i++){
+            int s=sc.nextInt();
+            int d=sc.nextInt();
+            int w=sc.nextInt();
+            edges.add(new Edge(s,d,w));
+        }
+        mstKruskals(V, edges);
+    }
+}
+
+input: 
+
+9
+14
+0 1 4
+1 2 8
+2 3 7
+3 4 9
+4 5 10
+5 6 2
+6 7 1
+7 0 8
+7 1 11
+7 8 7
+2 8 2
+8 6 6
+2 5 4
+3 5 14
+
+output:
+6 -> 7 : 1
+5 -> 6 : 2
+2 -> 8 : 2
+0 -> 1 : 4
+2 -> 5 : 4
+2 -> 3 : 7
+1 -> 2 : 8
+3 -> 4 : 9
+37
+
+-----------------------------------------------------------------------------
+
+PRIMS ALGORITHM
+
+import java.util.*;
+class Main{
+    int n;
+    Main(int n){
+        this.n=n;
+    }
+    int searchMinKey(int key[],boolean mstSet[]){
+        int m = Integer.MAX_VALUE;
+        int mi = -1;
+        for(int i=0; i<n; i++){
+            if(!mstSet[i] && key[i] < m){
+                m = key[i];
+                mi = i;
+            }
+        }
+        return mi;
+    }
+    void printMST(int parent[], int mat[][]){
+        int minCost = 0;
+        for(int i=1;i<n;i++){
+            System.out.println(parent[i] + "->" + i + ":" + mat[i][parent[i]]);
+            minCost += mat[i][parent[i]];
+        }
+        System.out.print(minCost);
+    }
+    void mstPrims(int mat[][]){
+        int key[] = new int[n];
+        boolean mstSet[] = new boolean[n];
+        int parent[] = new int[n];
+        for(int i=0;i<n;i++){
+            key[i] = Integer.MAX_VALUE;
+            mstSet[i] = false;
+        }
+        key[0] = 0;
+        parent[0] = -1;
+        for(int i=0;i<n;i++){
+            int mk=searchMinKey(key,mstSet);
+            mstSet[mk]=true;
+            for(int v=0;v<n;v++){
+                if(mat[mk][v]!=0 && !mstSet[v] && mat[mk][v]<key[v]){
+                    key[v]=mat[mk][v];
+                    parent[v]=mk; //keep track of edges part of MST
+                }
+            }
+        }
+        printMST(parent,mat);
+    }
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int v=sc.nextInt();
+        Main m = new Main(v);
+        int mat[][] = new int[v][v];
+        for(int i=0;i<v;i++){
+            for(int j=0;j<v;j++){
+                mat[i][j]=sc.nextInt();
+            }
+        }
+        m.mstPrims(mat);
+    }
+}
+
+3
+0 4 1
+4 0 3
+1 3 0
+
+2->1:3
+0->2:1
+4
+
+--------------------------------------------------------------------------------------
+
+dijktra's
+
+import java.util.*;
+class Main {
+    int n;
+
+    Main(int n) {
+        this.n = n;
+    }
+
+    int searchMinDistance(int dist[], boolean sptSet[]) {
+        int min = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for (int i = 0; i < n; i++) {
+            if (!sptSet[i] && dist[i] < min) {
+                min = dist[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
+    void printSolution(int dist[]) {
+        System.out.println("Vertex\tDistance from Source");
+        for (int i = 0; i < n; i++) {
+            System.out.println(i + "\t" + dist[i]);
+        }
+    }
+
+    void dijkstra(int graph[][], int src) {
+        int dist[] = new int[n];
+        boolean sptSet[] = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            dist[i] = Integer.MAX_VALUE;
+            sptSet[i] = false;
+        }
+
+        dist[src] = 0;
+
+        for (int count = 0; count < n - 1; count++) {
+            int u = searchMinDistance(dist, sptSet);
+            sptSet[u] = true;
+
+            for (int v = 0; v < n; v++) {
+                if (!sptSet[v] && graph[u][v] != 0 &&
+                    dist[u] != Integer.MAX_VALUE && dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                }
+            }
+        }
+
+        printSolution(dist);
+    }
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int v = sc.nextInt();
+        Main m = new Main(v);
+        int graph[][] = new int[v][v];
+        for (int i = 0; i < v; i++) {
+            for (int j = 0; j < v; j++) {
+                graph[i][j] = sc.nextInt();
+            }
+        }
+        int src = sc.nextInt();
+        m.dijkstra(graph, src);
+    }
+}
+
+--------------------------------------------------------------------------------------------
+
+bellman ford's - NEGATIVE VALUES
+
+
+
+------------------------------------------------------------------------------------------
+
+FLOYD-WARSHALL'S - ALL PAIRS SHORTEST PATH (DP)
+
+
+import java.util.*;
+class Main{
+    int n;
+    Main(int n){
+        this.n=n;
+    }
+    void floydwarshalls(int mat[][]){
+        for(int k=0;k<n;k++){ //intermediate
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    if(mat[i][k]!=Integer.MAX_VALUE && mat[k][j]!=Integer.MAX_VALUE && mat[i][k]+mat[k][j]<mat[i][j]){
+                        mat[i][j]=mat[i][k]+mat[k][j];
+                    }
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                System.out.print(mat[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int v=sc.nextInt();
+        Main m = new Main(v);
+        int mat[][] = new int[v][v];
+        for(int i=0;i<v;i++){
+            for(int j=0;j<v;j++){
+                mat[i][j]=sc.nextInt();
+                if(mat[i][j]==0 && i!=j){
+                    mat[i][j] = Integer.MAX_VALUE;
+                }
+            }
+        }
+        m.floydwarshalls(mat);
+    }
+}
+
+--------------------------------------------------------------------------------
+
+sum of all substrings of a string
+
+// Java program to print sum of all substring of
+// a number represented as a string
+import java.util.Arrays;
+
+class GFG {
+
+	// Returns sum of all substring of num
+	public static int sumOfSubstrings(String num)
+	{
+		int n = num.length();
+
+		// allocate memory equal to length of string
+		int sumofdigit[] = new int[n];
+
+		// initialize first value with first digit
+		sumofdigit[0] = num.charAt(0) - '0';
+		int res = sumofdigit[0];
+
+		// loop over all digits of string
+		for (int i = 1; i < n; i++) {
+			int numi = num.charAt(i) - '0';
+
+			// update each sumofdigit from previous value
+			sumofdigit[i]
+				= (i + 1) * numi + 10 * sumofdigit[i - 1];
+
+			// add current value to the result
+			res += sumofdigit[i];
+		}
+
+		return res;
+	}
+
+	// Driver code 
+	public static void main(String[] args)
+	{
+		String num = "1234";
+
+		// Function call
+		System.out.println(sumOfSubstrings(num));
+	}
+}
+
+-------------------------------------------------------------------------------
+
+13.3.8
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TreeNodeScores {
+    
+    public static void main(String[] args) {
+        int n = 5;
+        int[] parents = {-1, 2, 0, 2, 0};
+        System.out.println(countHighestScoreNodes(n, parents));
+    }
+
+    public static int countHighestScoreNodes(int n, int[] parents) {
+        List<Integer>[] tree = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            tree[i] = new ArrayList<>();
+        }
+        
+        int root = -1;
+        for (int i = 0; i < n; i++) {
+            if (parents[i] == -1) {
+                root = i;
+            } else {
+                tree[parents[i]].add(i);
+            }
+        }
+
+        int[] subtreeSize = new int[n];
+        calculateSubtreeSize(tree, root, subtreeSize);
+
+        long maxScore = 0;
+        int maxScoreCount = 0;
+
+        for (int i = 0; i < n; i++) {
+            long score = 1;
+            int remainingNodes = n - subtreeSize[i];
+
+            if (remainingNodes > 0) {
+                score *= remainingNodes;
+            }
+            
+            for (int child : tree[i]) {
+                score *= subtreeSize[child];
+            }
+
+            if (score > maxScore) {
+                maxScore = score;
+                maxScoreCount = 1;
+            } else if (score == maxScore) {
+                maxScoreCount++;
+            }
+        }
+
+        return maxScoreCount;
+    }
+
+    private static int calculateSubtreeSize(List<Integer>[] tree, int node, int[] subtreeSize) {
+        int size = 1;
+        for (int child : tree[node]) {
+            size += calculateSubtreeSize(tree, child, subtreeSize);
+        }
+        subtreeSize[node] = size;
+        return size;
+    }
+}
+
+-----------------------------------------------------------------------------
+
+ a scenario of Armed Forced Canteen where there are Q number of persons waiting in a queue and ith person has a power level Xi where 1 ≤ Xi ≤ Q, which is the
+
+ranking of individual person canteen card based on which each person will get the priority in billing of items. Hence, the process of overtaking happens by swapping the adjacent person. The list of operation can be performed every minute till the queue is not empty.
+
+The person at the first position in the queue will use the billing counter and then leaves the queue.
+After the first step, the process repeats till the queue is not empty, the person will use the benefit of higher ranking (power level) for overtaking (swapping the positions) with the person in front of him in the queue but excluding the person located at the first position in the queue.
+Calculate the time at which every person will use the billing counter in minutes.
+
+
+
+Note: The state of the queue changes after every overtaking.
+
+Initially, let the order of people in the queue is [1, 2, 3, 4, 5] and their power levels are 2, 3, 4, 1 and 5 respectively.
+
+During the 1st minute, Person 1 uses the billing counter and leaves. The order of the people in the queue will be [2, 3, 4, 5] after 1 leaves the queue. Now people start overtaking (2nd step of the process). Since 3 is the 2nd person in the queue and 2 is in front of him and X2 < X3, person 3 will overtake 2.
+The order of the people in the queue will become [3, 2, 4, 5]. Now 4 is the 3rd person in the queue and 2 is in front of him. But X2 > X4, so there will be no overtaking here. Finally, 5 is the 4th person and 4 is in front of him. And since X4 < X5, 5 will overtake 4 and the order of the people in the queue will be [3, 2, 5, 4] after the 1st minute.
+During the 2nd minute, person 3 is in front of the queue. He will use the billing counter and leave. The order of the people in the queue will become [2, 5,4]. Since 5 is the 2nd person in the queue with 2 in front of him and X2 < X5, so person 5 will overtake 2 and the order of the people in the queue becomes [5, 2, 4]. Now 4 is the 3rd person in the queue. But X2 > X4, so person 4 can't overtake person 2. By the end of 2nd minute, the order of people in the queue is [5, 2, 4].
+During the 3rd minute, person 5 is in front of the queue. He will use the billing counter and leave. After this, the queue will be 2, 4. And since X2 > X4, there will be no overtaking.
+During the 4th minute, person 2 uses the billing counter and leaves.
+During the 5th minute, person 4 uses the billing counter and leaves.
+Hence, persons 1,2,3,4 and 5 use the billing counter at 1, 4, 2, 5, 3 minutes, respectively. The final output is the time a which each person leaves the billing counter are {1, 4, 2, 5, 3].
+
+import java.util.*;
+
+public class ArmedForcesCanteen {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int Q = scanner.nextInt(); // Number of people in the queue
+        int[] powerLevels = new int[Q];
+        
+        for (int i = 0; i < Q; i++) {
+            powerLevels[i] = scanner.nextInt();
+        }
+        
+        int[] leaveTimes = calculateLeaveTimes(Q, powerLevels);
+        
+        for (int time : leaveTimes) {
+            System.out.print(time + " ");
+        }
+    }
+
+    public static int[] calculateLeaveTimes(int Q, int[] powerLevels) {
+        int[] leaveTimes = new int[Q];
+        List<Person> queue = new ArrayList<>();
+        
+        for (int i = 0; i < Q; i++) {
+            queue.add(new Person(i + 1, powerLevels[i]));
+        }
+
+        int minute = 0;
+        while (!queue.isEmpty()) {
+            minute++;
+            Person frontPerson = queue.remove(0);
+            leaveTimes[frontPerson.id - 1] = minute;
+            
+            // Process overtaking
+            int i = 1;
+            while (i < queue.size()) {
+                if (queue.get(i - 1).power < queue.get(i).power) {
+                    Collections.swap(queue, i - 1, i);
+                }
+                i++;
+            }
+        }
+        
+        return leaveTimes;
+    }
+}
+
+class Person {
+    int id;
+    int power;
+
+    Person(int id, int power) {
+        this.id = id;
+        this.power = power;
+    }
+}
+---------------------------------------------------------------------------------
+
+create a function rotateClockwise(head, k) where head refers to the header node in the linked list and k represents the number of places the list is to be shifted right.
+
+The function returns the reference to the new head node after rotating the originally entered linked list.
+creat SLL by accepitng n values and creating a list for all the following problems java
+
+import java.util.Scanner;
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+public class RotateLinkedList {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create SLL
+        System.out.print("Enter the number of elements in the linked list: ");
+        int n = scanner.nextInt();
+        ListNode head = createSLL(scanner, n);
+
+        // Rotate the linked list
+        System.out.print("Enter the number of places to rotate the linked list clockwise: ");
+        int k = scanner.nextInt();
+        head = rotateClockwise(head, k);
+
+        // Print the rotated linked list
+        System.out.println("Rotated Linked List:");
+        printLinkedList(head);
+
+        scanner.close();
+    }
+
+    // Function to create a single linked list from user input
+    public static ListNode createSLL(Scanner scanner, int n) {
+        if (n <= 0) return null;
+        System.out.println("Enter the elements of the linked list:");
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        for (int i = 0; i < n; i++) {
+            int val = scanner.nextInt();
+            ListNode newNode = new ListNode(val);
+            prev.next = newNode;
+            prev = newNode;
+        }
+        return dummy.next;
+    }
+
+    // Function to rotate the linked list clockwise by k places
+    public static ListNode rotateClockwise(ListNode head, int k) {
+        if (head == null || k <= 0) return head;
+
+        // Calculate the length of the linked list
+        int length = 0;
+        ListNode current = head;
+        while (current != null) {
+            length++;
+            current = current.next;
+        }
+
+        // Adjust k to be less than the length of the linked list
+        k %= length;
+
+        // If k is 0, no rotation needed
+        if (k == 0) return head;
+
+        // Find the (n - k % n)th node
+        int stepsToNewHead = length - k;
+        ListNode prev = null;
+        current = head;
+        for (int i = 0; i < stepsToNewHead; i++) {
+            prev = current;
+            current = current.next;
+        }
+
+        // Rotate the list
+        prev.next = null; // Set the node before the new head to null
+        ListNode newHead = current; // New head
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = head; // Connect the current tail to the original head
+
+        return newHead;
+    }
+
+    // Function to print the linked list
+    public static void printLinkedList(ListNode head) {
+        ListNode current = head;
+        while (current != null) {
+            System.out.print(current.val + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+--------------------------------------------------------------------------------------
+
+reveese every k elements in LL, if last set is less than k, reverse that as well
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class ReverseKElementsLL {
+    public static void main(String[] args) {
+        // Example usage
+        ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5, 6, 7, 8});
+        int k = 3;
+        ListNode reversed = reverseKGroup(head, k);
+        printLinkedList(reversed); // Output: 3 2 1 6 5 4 8 7
+    }
+
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k <= 1) {
+            return head; // No need to reverse if k is 1 or less
+        }
+
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prevGroupEnd = dummy;
+
+        while (prevGroupEnd != null) {
+            prevGroupEnd = reverseNextKNodes(prevGroupEnd, k);
+        }
+
+        return dummy.next;
+    }
+
+    public static ListNode reverseNextKNodes(ListNode prevGroupEnd, int k) {
+        // Find the start node of the next group
+        ListNode current = prevGroupEnd;
+        for (int i = 0; i < k && current != null; i++) {
+            current = current.next;
+        }
+
+        if (current == null) {
+            return null; // Reached the end of the list, no more groups to reverse
+        }
+
+        // Reverse the next k nodes
+        ListNode groupStart = prevGroupEnd.next;
+        ListNode prev = null;
+        ListNode next = null;
+        for (int i = 0; i < k; i++) {
+            next = groupStart.next;
+            groupStart.next = prev;
+            prev = groupStart;
+            groupStart = next;
+        }
+
+        // Connect the reversed group with the rest of the list
+        ListNode groupEnd = prevGroupEnd.next;
+        prevGroupEnd.next = prev;
+        groupEnd.next = groupStart;
+
+        return groupEnd;
+    }
+
+    // Helper function to create a linked list from an array of values
+    public static ListNode createLinkedList(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return null;
+        }
+
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+        for (int val : arr) {
+            ListNode newNode = new ListNode(val);
+            current.next = newNode;
+            current = newNode;
+        }
+        return dummy.next;
+    }
+
+    // Helper function to print a linked list
+    public static void printLinkedList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+}
+---------------------------------------------------------------------------------
+
+detect cycle and TOPO sort
+
+import java.util.*;
+class Main{
+    private int v;
+    private ArrayList<Integer>[] al;
+    @SuppressWarnings("unchecked")
+    Main(int v){
+        this.v=v;
+        al=new ArrayList[v];
+        for(int i=0;i<v;i++){
+            al[i]=new ArrayList<>();
+        }
+    }
+    void insert(int s,int d){
+        al[s].add(d);
+    }
+    void topoSort(){
+        int inDeg[]=new int[v];
+        for(int i=0;i<v;i++){
+            for(int j:al[i]){
+                inDeg[j]++;
+            }
+        }
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<v;i++){
+            if(inDeg[i]==0){
+                q.add(i);
+            }
+        }
+        ArrayList<Integer> topo=new ArrayList<>();
+        int c=0;
+        while(!q.isEmpty()){
+            int u=q.poll();
+            topo.add(u);
+            c++;
+            for(int i:al[u]){
+                inDeg[i]=inDeg[i]-1;
+                if(inDeg[i]==0){
+                    q.add(i);
+                }
+            }
+        }
+        if(c!=v){
+            System.out.print("cycle detected");
+        }
+        for(int i:topo){
+            System.out.print(i+"->");
+        }
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int v=sc.nextInt();
+        Main g=new Main(v);
+        int e=sc.nextInt();
+        for(int i=0;i<e;i++){
+            int s=sc.nextInt();
+            int d=sc.nextInt();
+            g.insert(s,d);
+        }
+        g.topoSort();
+    }
+}
+---------------------------------------------------------------------------------
+
+cycle detection in graph(DFS)
+
+import java.util.*;
+class Graph {
+    private int V;
+    private List<List<Integer>> adj;
+
+    public Graph(int V) {
+        this.V = V;
+        adj = new ArrayList<>(V);
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+    }
+
+    public void addEdge(int u, int v) {
+        adj.get(u).add(v);
+    }
+
+    private boolean isCyclicUtil(int v, boolean[] visited, int parent) {
+        visited[v] = true;
+        for (int i : adj.get(v)) {
+            if (!visited[i]) {
+                if (isCyclicUtil(i, visited, v))
+                    return true;
+            } else if (i != parent) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCyclic() {
+        boolean[] visited = new boolean[V];
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                if (isCyclicUtil(i, visited, -1))
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+public class Main{
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int v=sc.nextInt();
+        Graph g=new Graph(v);
+        int e=sc.nextInt();
+        for(int i=0;i<e;i++){
+            int s=sc.nextInt();
+            int d=sc.nextInt();
+            g.addEdge(s,d);
+        }
+        if(g.isCyclic()){
+            System.out.print("cycle");
+        }
+        else{
+            System.out.print("no cycle");
+        }
+    }
+}
+------------------------------------------------------------------------------------------------------------------
+
+You are given a rectangular battelefield ( R x C ) assume it in a matrix or grid ( grid[ ][ ] ) format.
+Battle field is having few landmines marked as 0.
+You have to compute the length of the shortest safe route possible from any cell in the first column to any cell in the last column of the matrix.
+We are allowed to move to only adjacent cells which are not landmines. i.e. the route cannot contains any diagonal moves.
+Note: We have to avoid landmines and also their four adjacent cells (left, right, above and below) as they are also unsafe.
+
+import java.util.*;
+
+public class BattleField {
+    
+    // Directions for moving up, down, left, right
+    private static final int[] rowDir = {-1, 1, 0, 0};
+    private static final int[] colDir = {0, 0, -1, 1};
+
+    public static void main(String[] args) {
+        int[][] grid = {
+            {1, 1, 1, 1},
+            {1, 0, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1}
+        };
+        
+        int shortestPath = findShortestSafeRoute(grid);
+        if (shortestPath != Integer.MAX_VALUE) {
+            System.out.println("The shortest safe route is of length: " + shortestPath);
+        } else {
+            System.out.println("There is no safe route.");
+        }
+    }
+
+    public static int findShortestSafeRoute(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
+        // Mark the unsafe cells around landmines
+        markUnsafeCells(grid);
+
+        // BFS to find the shortest path from any cell in the first column to any cell in the last column
+        int minDist = Integer.MAX_VALUE;
+        for (int i = 0; i < rows; i++) {
+            if (grid[i][0] == 1) {
+                boolean[][] visited = new boolean[rows][cols];
+                minDist = Math.min(minDist, bfs(grid, i, 0, visited));
+            }
+        }
+        
+        return minDist;
+    }
+    
+    private static void markUnsafeCells(int[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        boolean[][] tempGrid = new boolean[rows][cols];
+        
+        // Copy the original grid to tempGrid
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                tempGrid[i][j] = grid[i][j] == 0;
+            }
+        }
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (tempGrid[i][j]) {
+                    for (int d = 0; d < 4; d++) {
+                        int newRow = i + rowDir[d];
+                        int newCol = j + colDir[d];
+                        if (isValid(newRow, newCol, rows, cols) && grid[newRow][newCol] == 1) {
+                            grid[newRow][newCol] = -1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private static int bfs(int[][] grid, int startRow, int startCol, boolean[][] visited) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startRow, startCol, 0});
+        visited[startRow][startCol] = true;
+        
+        while (!queue.isEmpty()) {
+            int[] cell = queue.poll();
+            int row = cell[0];
+            int col = cell[1];
+            int dist = cell[2];
+            
+            // If reached the last column, return the distance
+            if (col == cols - 1) {
+                return dist;
+            }
+            
+            // Explore all 4 possible directions
+            for (int d = 0; d < 4; d++) {
+                int newRow = row + rowDir[d];
+                int newCol = col + colDir[d];
+                
+                if (isValid(newRow, newCol, rows, cols) && grid[newRow][newCol] == 1 && !visited[newRow][newCol]) {
+                    visited[newRow][newCol] = true;
+                    queue.add(new int[]{newRow, newCol, dist + 1});
+                }
+            }
+        }
+        
+        return Integer.MAX_VALUE;
+    }
+    
+    private static boolean isValid(int row, int col, int rows, int cols) {
+        return row >= 0 && row < rows && col >= 0 && col < cols;
+    }
+}
+
+----------------------------------------------------------------------------------
+
+UNION FIND WORD PROBLEM
+
+mr. A is a nuclear scientist who is performing an experiment to find an effective formula for generating electricity via nuclear reaction. The experiment involves mixing some solutions. Based on the theoretical research Franky has done, he came up with an n * 2 array 'M', where M[i] = {X, Y} denotes solutions X and Y that needs to be mixed.
+
+Franky from his past experience, it has been known that mixing some solutions leads to an explosion. The explosive solutions are also provided as a m * 2 array 'D' where D[i] = {P, Q} denotes that if somehow solutions P and Q mixing results to an explosion.
+
+
+
+You have to help Franky for finding the solution by printing "1" if it is safe to mix solutions in 'M[i]' or else "0".
+
+Note: Franky should follow the order of mixing of solutions as it is in 'M' otherwise formula for generating electricity will be ineffective. Also, Franky will not mix the solutions in 'M[i]' once he gets to know that mixing them will result in an explosion. Mixing a solution will effect the other solutions which will appear after it. 
+
+Sample test case 1:
+
+5 2 ------------------> n and m respectively
+
+1 2 2 3 4 5 3 5 2 4 --------------> Array M of size n*2
+
+1 3 4 2 -----------------------------> Array D of size m*2
+
+Output:
+
+1 0 1 1 0
+
+Editorial:
+
+Mixing the first solution(1 and 2) of 'M' do not result in any kind of explosion hence solution is "1", while mixing(2nd solution) 2 and 3 is not allowed because it will result in an explosion as 1 and 3 would be in same solution hence the result is "0" as the answer for 2nd solution. Mixing the third solution(4 and 5) and 4th solution(3 and 5) of 'M' do not result in any kind of explosion hence solutions are "1". While mixing 2 and 4 is not allowed because it will result in an explosion hence solution is "0".
+
+import java.util.*;
+
+public class SolutionMixing {
+    public static void main(String[] args) {
+        int n = 5;
+        int m = 2;
+        
+        int[][] M = {
+            {1, 2},
+            {2, 3},
+            {4, 5},
+            {3, 5},
+            {2, 4}
+        };
+        
+        int[][] D = {
+            {1, 3},
+            {4, 2}
+        };
+        
+        int[] result = findSafeMixing(n, m, M, D);
+        System.out.println(Arrays.toString(result));
+    }
+    
+    public static int[] findSafeMixing(int n, int m, int[][] M, int[][] D) {
+        UnionFind uf = new UnionFind(n * 2); // UnionFind for the number of unique solutions
+        Set<String> dangerousPairs = new HashSet<>();
+        
+        // Populate the set with dangerous pairs
+        for (int[] pair : D) {
+            dangerousPairs.add(pair[0] + "," + pair[1]);
+            dangerousPairs.add(pair[1] + "," + pair[0]);
+        }
+        
+        int[] result = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            int x = M[i][0];
+            int y = M[i][1];
+            
+            boolean isSafe = true;
+            
+            // Check for any potential dangerous pair due to the mixing of current solutions
+            for (int[] pair : D) {
+                int p = pair[0];
+                int q = pair[1];
+                
+                if (uf.find(x) == uf.find(p) && uf.find(y) == uf.find(q) ||
+                    uf.find(x) == uf.find(q) && uf.find(y) == uf.find(p)) {
+                    isSafe = false;
+                    break;
+                }
+            }
+            
+            if (isSafe) {
+                uf.union(x, y);
+                result[i] = 1;
+            } else {
+                result[i] = 0;
+            }
+        }
+        
+        return result;
+    }
+}
+
+// Union-Find (Disjoint Set Union) implementation
+class UnionFind {
+    private int[] parent;
+    private int[] rank;
+    
+    public UnionFind(int size) {
+        parent = new int[size];
+        rank = new int[size];
+        
+        for (int i = 0; i < size; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+    }
+    
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Path compression
+        }
+        return parent[x];
+    }
+    
+    public void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+        
+        if (rootX != rootY) {
+            if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX;
+            } else if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------
+
+In a restaurant, two waiters, A and B, receive n orders per day, earning tips as per arrays arr[i] and brr[i] respectively. If A takes the ith order, the tip is arr[i] rupees; if B takes it, the tip is brr[i] rupees.
+
+To maximize total tips, they must distribute the orders such that:
+
+A can handle at most x orders
+B can handle at most y orders
+Given that x + y ≥ n, all orders can be managed by either A or B. Return the maximum possible total tip after processing all the orders.
+
+
+
+public static long maxTip(int n, int x, int y, int[] arr, int[] brr) {
+        Integer in[]=new Integer[n];
+        for(int i=0;i<n;i++){
+            in[i]=i;
+        }
+        Arrays.sort(in,new Comparator<Integer>(){
+            @Override
+            public int compare (Integer a,Integer b){
+                return Math.abs(brr[b]-arr[b])-Math.abs(brr[a]-arr[a]);
+            }
+        });
+        long res=0,c1=0,c2=0;
+        for(int i=0;i<n;i++){
+            int j=in[i];
+            if((arr[j]>=brr[j]&&c1<x)||c2>=y){
+                res+=arr[j];
+                c1++;
+            }
+            else{
+                res+=brr[j];
+                c2++;
+            }
+        }
+        return res;
+    }
+
+
+------------------------------------------------------------------------------------------
+
+count the number of cycles in the DG
+
+import java.util.ArrayList;
+import java.util.List;
+public class DirectedGraphCycles {
+    private final int V; 
+    private final List<List<Integer>> adj; 
+    public DirectedGraphCycles(int V) {
+        this.V = V;
+        adj = new ArrayList<>(V);
+        for (int i = 0; i < V; i++) {
+            adj.add(new ArrayList<>());
+        }
+    }
+    public void addEdge(int v, int w) {
+        adj.get(v).add(w);
+    }
+    public int countCycles() {
+        boolean[] visited = new boolean[V];
+        boolean[] recStack = new boolean[V];
+        int[] cycleCount = {0};
+
+        for (int i = 0; i < V; i++) {
+            if (detectCycleUtil(i, visited, recStack, cycleCount)) {
+                cycleCount[0]++;
+            }
+        }
+
+        return cycleCount[0];
+    }
+    private boolean detectCycleUtil(int v, boolean[] visited, boolean[] recStack, int[] cycleCount) {
+        if (recStack[v]) {
+            return true;
+        }
+        if (visited[v]) {
+            return false;
+        }
+        visited[v] = true;
+        recStack[v] = true;
+        for (Integer neighbor : adj.get(v)) {
+            if (detectCycleUtil(neighbor, visited, recStack, cycleCount)) {
+                cycleCount[0]++;
+            }
+        }
+        recStack[v] = false;
+        return false;
+    }
+    public static void main(String[] args) {
+        DirectedGraphCycles graph = new DirectedGraphCycles(6);
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 4);
+        graph.addEdge(4, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 3);
+        graph.addEdge(3,5);
+        graph.addEdge(5,2);
+        System.out.println("Number of cycles: " + graph.countCycles());
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+ find a particular K length cycle
+
+
+----------------------------------------------------------------------------------
+detect Hamiltonian Cycle
+
+import java.util.Arrays;
+
+public class HamiltonianCycle {
+    private int[][] graph;
+    private int V;
+    private int[] path;
+
+    public HamiltonianCycle(int[][] graph) {
+        this.graph = graph;
+        this.V = graph.length;
+        this.path = new int[V];
+    }
+
+    public boolean isHamiltonianCycle() {
+        Arrays.fill(path, -1);
+        path[0] = 0; // Start from the first vertex
+
+        // Use backtracking to find the Hamiltonian Cycle
+        if (hamiltonianCycleUtil(1)) {
+            printSolution();
+            return true;
+        } else {
+            System.out.println("No Hamiltonian Cycle found");
+            return false;
+        }
+    }
+
+    private boolean hamiltonianCycleUtil(int pos) {
+        // Base case: If all vertices are included in the path
+        if (pos == V) {
+            // And if there is an edge from the last included vertex to the first vertex
+            return graph[path[pos - 1]][path[0]] == 1;
+        }
+
+        // Try different vertices as the next candidate in the Hamiltonian Cycle
+        for (int v = 1; v < V; v++) {
+            // Check if this vertex can be added to the Hamiltonian Cycle
+            if (isSafe(v, pos)) {
+                path[pos] = v;
+
+                // Recur to construct the rest of the path
+                if (hamiltonianCycleUtil(pos + 1)) {
+                    return true;
+                }
+
+                // If adding vertex v doesn't lead to a solution, remove it
+                path[pos] = -1;
+            }
+        }
+        return false;
+    }
+
+    private boolean isSafe(int v, int pos) {
+        // Check if this vertex is an adjacent vertex of the previously added vertex
+        if (graph[path[pos - 1]][v] == 0) {
+            return false;
+        }
+
+        // Check if the vertex has already been included
+        for (int i = 0; i < pos; i++) {
+            if (path[i] == v) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void printSolution() {
+        System.out.println("Hamiltonian Cycle found:");
+        for (int i = 0; i < V; i++) {
+            System.out.print(path[i] + " ");
+        }
+        System.out.println(path[0]); // Print the starting vertex again to show the complete cycle
+    }
+
+    public static void main(String[] args) {
+        int[][] graph = {
+            {0, 1, 0, 1, 0},
+            {1, 0, 1, 1, 1},
+            {0, 1, 0, 0, 1},
+            {1, 1, 0, 0, 1},
+            {0, 1, 1, 1, 0}
+        };
+        HamiltonianCycle hc = new HamiltonianCycle(graph);
+        hc.isHamiltonianCycle();
+    }
+}
+
+---------------------------------------------------------------------------------
+
+Articulation points ( Cut vertices)
+
+Biconnectivity:
+A vertex u is an articulation point if one of the below condition is true:
+C1: u is the root node of DFS tree and it has atleast 2 kids.
+C2:if u is not the root node of the DFS tree and it has a child v such that no vertex in the subtree rooted at v has back edge to the ancestors of u
+
+pseudo code:
+
+Result[]
+VA = { F, F, F, F, F, F, F}
+Disc[]: {0, 0,0,0,0,0,0}
+lowT[]: {0,0,0,0,0,0,0}
+parent[]: { null, null, null, null, null, null,null}
+time = 0;
+solutionAP( vertex v) {
+VA[v] = true;
+lowT[v] =Disc[v] = time +1
+child = 0
+for each av of v {
+if(!VA[av]) {
+child++
+parent[av] = v
+solutionAP( av)
+lowT[v] = min ( lowT[v], low[av])
+if(parent[v] == null and child > 1) { // C1
+append v to the result[]
+}
+If(parent[v] != null and Disc[v] <= lowT[av]) { // C2 is true
+append v to the result[]
+}
+
+
+}
+Else if (av != parent[v]) // back edge
+{ lowT[v] = min( lowT[v], Disc[av]) }
+
+
+}
+
+}
+
+
+CODE:
+
+import java.util.*;
+
+public class Main {
+    private int time = 0;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter number of vertices:");
+        int V = sc.nextInt();
+        System.out.println("Enter number of edges:");
+        int E = sc.nextInt();
+        List<Integer>[] adj = new List[V];
+        for (int i = 0; i < V; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        System.out.println("Enter the edges (u v):");
+        for (int i = 0; i < E; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            adj[u].add(v);
+            adj[v].add(u);
+        }
+        Main m = new Main();
+        List<Integer> res = m.findArticulationPoints(adj, V);
+        for (int i : res) {
+            System.out.println(i);
+        }
+    }
+    public List<Integer> findArticulationPoints(List<Integer>[] adj, int V) {
+        boolean[] visited = new boolean[V];
+        int[] disc = new int[V];
+        int[] low = new int[V];
+        int[] parent = new int[V];
+        boolean[] ap = new boolean[V];  
+        Arrays.fill(parent, -1);
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                solutionAP(i, visited, disc, low, parent, ap, adj);
+            }
+        }
+        for (int i = 0; i < V; i++) {
+            if (ap[i]) {
+                res.add(i);
+            }
+        }
+        return res;
+    }
+    private void solutionAP(int u, boolean[] visited, int[] disc, int[] low, int[] parent, boolean[] ap, List<Integer>[] adj) {
+        visited[u] = true;
+        disc[u] = low[u] = ++time;
+        int children = 0;
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                children++;
+                parent[v] = u;
+                solutionAP(v, visited, disc, low, parent, ap, adj);
+                low[u] = Math.min(low[u], low[v]);
+                if (parent[u] == -1 && children > 1) {
+                    ap[u] = true;
+                }
+                if (parent[u] != -1 && low[v] >= disc[u]) {
+                    ap[u] = true;
+                }
+            }
+            else if (v != parent[u]) {
+                low[u] = Math.min(low[u], disc[v]);
+            }
+        }
+    }
+}
+
+
+--------------------------------------------------------------------------------
+
+public class DogCages {
+
+    public static void main(String[] args) {
+        int N = 5; // Number of dogs to be arranged in w ways where aggressive dog needs to be placed sepaarte and passive dogs can paired.
+        
+        long[] dp = new long[N + 1];
+        
+        // Base cases
+        dp[0] = 1;
+        if (N >= 1) dp[1] = 1;
+        
+        // Fill dp array
+        for (int i = 2; i <= N; i++) {
+            dp[i] = dp[i - 1]; // Case 1: Place an aggressive dog alone
+            
+            // Case 2: Pair two passive dogs together
+            dp[i] += ((long) i * (i - 1) / 2) * dp[i - 2];
+        }
+        
+        // Result is stored in dp[N]
+        long ways = dp[N];
+        System.out.println("Number of ways to arrange " + N + " dogs in cages: " + ways);
+    }
+}
+
+
+-------------------------------------------------------------------------------
+
+LC # 787
+
+LC # 1109
+
+-------------------------------------------------------------------------------
+ Prims/Kruskals implementations - Similar to LC # 1584
+
+There are n cities and there are roads in between some of the cities. Somehow all the roads are damaged simultaneously. We have to repair the roads to connect the cities again. There is a fixed cost to repair a particular road. Find out the minimum cost to connect all the cities by repairing roads. Input is in matrix(city) form, if city[i][j] = 0 then there is not any road between city i and city j, if city[i][j] = a > 0 then the cost to rebuild the path between city i and city j is a. Print out the minimum cost to connect all the cities. 
+It is sure that all the cities were connected before the roads were damaged.
+
+public class MinCostConnectCities {
+    
+    public static int minCostToConnectCities(int[][] city) {
+        int n = city.length;
+        boolean[] visited = new boolean[n];
+        int[] minEdge = new int[n];
+        Arrays.fill(minEdge, Integer.MAX_VALUE);
+        minEdge[0] = 0;
+        PriorityQueue<Pair> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.cost));
+        pq.offer(new Pair(0, 0)); 
+        int minCost = 0;
+
+        while (!pq.isEmpty()) {
+            Pair current = pq.poll();
+            int u = current.city;
+            int cost = current.cost;
+            if (visited[u]) continue;
+            visited[u] = true;
+            minCost += cost;
+            
+            for (int v = 0; v < n; v++) {
+                if (city[u][v] > 0 && !visited[v] && city[u][v] < minEdge[v]) {
+                    minEdge[v] = city[u][v];
+                    pq.offer(new Pair(v, city[u][v]));
+                }
+            }
+        }
+
+        return minCost;
+    }
+
+    // Helper class to store the city and the cost to connect to it
+    static class Pair {
+        int city;
+        int cost;
+        
+        Pair(int city, int cost) {
+            this.city = city;
+            this.cost = cost;
+        }
+    }
+
+-------------------------------------------------------------------------------
+LC # 332
+
+Test Case:
+tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+
+
+1. Adjacency List : HashMap (Key, priorityQueue)
+
+“JFK”------ “ATL”, “SFO” ( adjacency list of every vertex should be in ascending order)
+“SFO”------- “ATL”
+“ATL”-------- “JFK”, “SFO”
+
+
+
+
+2. DFS initialization:
+Stack: [ “ JFK”]
+tourList: []
+
+3. Now start DFS Traversal
+Start from “JFK”:
+Stack[“JFK”]
+Move to ATL
+Stack: [ “JFK”, “ATL”]
+Move to “JFK”
+Stack: [“JFK”, “ATL”, “JFK”]
+Move to “SFO”
+Stack:[“JFK”, “ATL”, “JFK”, “SFO”]
+Move to ATL
+Stack”: [“JFK”, “ATL”, “JFK”, “SFO”, “ATL”]
+Move to “SFO”
+Stack: [“JFK”, “ATL”, “JFK”, “SFO”, “ATL”, “SFO”].
+After SFO no destination is left
+Backtracking:
+Stack: [, , , ,]
+touList:[ “JFK”, “ATL” ,“JFK” ,“SFO”, “ATL” ,“SFO”]
+
+code:
+
+
+-------------------------------------------------------------------------------
+backtracking 1-rat in a maze
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MazePaths {
+
+    // Initialize a string direction which represents all
+    // the directions.
+    static String direction = "DLRU";
+
+    // Arrays to represent change in rows and columns
+    static int[] dr = { 1, 0, 0, -1 };
+    static int[] dc = { 0, -1, 1, 0 };
+
+    // Function to check if cell(row, col) is inside the
+    // maze and unblocked
+    static boolean isValid(int row, int col, int n,
+                           int[][] maze)
+    {
+        return row >= 0 && col >= 0 && row < n && col < n
+            && maze[row][col] == 1;
+    }
+
+    // Function to get all valid paths
+    static void findPath(int row, int col, int[][] maze,
+                         int n, ArrayList<String> ans,
+                         StringBuilder currentPath)
+    {
+        // If we reach the bottom right cell of the matrix,
+        // add the current path to ans and return
+        if (row == n - 1 && col == n - 1) {
+            ans.add(currentPath.toString());
+            return;
+        }
+        // Mark the current cell as blocked
+        maze[row][col] = 0;
+
+        for (int i = 0; i < 4; i++) {
+            // Find the next row based on the current row
+            // (row) and the dr[] array
+            int nextrow = row + dr[i];
+            // Find the next column based on the current
+            // column (col) and the dc[] array
+            int nextcol = col + dc[i];
+
+            // Check if the next cell is valid or not
+            if (isValid(nextrow, nextcol, n, maze)) {
+                currentPath.append(direction.charAt(i));
+                // Recursively call the FindPath function
+                // for the next cell
+                findPath(nextrow, nextcol, maze, n, ans,
+                         currentPath);
+                // Remove the last direction when
+                // backtracking
+                currentPath.deleteCharAt(
+                    currentPath.length() - 1);
+            }
+        }
+        // Mark the current cell as unblocked
+        maze[row][col] = 1;
+    }
+
+    public static void main(String[] args)
+    {
+        int[][] maze = { { 1, 0, 0, 0 },
+                         { 1, 1, 0, 1 },
+                         { 1, 1, 0, 0 },
+                         { 0, 1, 1, 1 } };
+
+        int n = maze.length;
+        // List to store all the valid paths
+        ArrayList<String> result = new ArrayList<>();
+        // Store current path
+        StringBuilder currentPath = new StringBuilder();
+
+        if (maze[0][0] != 0 && maze[n - 1][n - 1] != 0) {
+            // Function call to get all valid paths
+            findPath(0, 0, maze, n, result, currentPath);
+        }
+
+        if (result.size() == 0)
+            System.out.println(-1);
+        else
+            for (String path : result)
+                System.out.print(path + " ");
+        System.out.println();
+    }
+}
+
+-------------------------------------------------------------------------------
+backtracking 2 - max number with n swaps
+
+public class MaxNumberSwaps {
+    static String maxNumber;
+    
+    public static void main(String[] args) {
+        String number = "123456";
+        int n = 2; // Example value for n
+        System.out.println(findMaximumNumber(number, n));
+    }
+    
+    public static String findMaximumNumber(String number, int n) {
+        maxNumber = number;
+        char[] digits = number.toCharArray();
+        findMaximumNumberHelper(digits, n);
+        return maxNumber;
+    }
+    
+    private static void findMaximumNumberHelper(char[] digits, int swapsLeft) {
+        if (swapsLeft == 0) {
+            return;
+        }
+        
+        int len = digits.length;
+        for (int i = 0; i < len - 1; i++) {
+            for (int j = i + 1; j < len; j++) {
+                if (digits[i] < digits[j]) {
+                    swap(digits, i, j);
+                    String currentNumber = new String(digits);
+                    if (currentNumber.compareTo(maxNumber) > 0) {
+                        maxNumber = currentNumber;
+                    }
+                    findMaximumNumberHelper(digits, swapsLeft - 1);
+                    swap(digits, i, j); // Backtrack to the original configuration
+                }
+            }
+        }
+    }
+    
+    private static void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+-------------------------------------------------------------------------------
+dp - word break
+
+public boolean wordBreak(String s, List<String> words) {
+        Set<String> set = new HashSet<>(words);
+        boolean dp[] = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && words.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+-------------------------------------------------------------------------------
+swaping every 2/4/8/16 bits
+
+import java.util.*;
+class Main {
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        /*swap every alternate bit*/
+        int n=sc.nextInt();
+        int evenBits=n&0xAAAAAAAA;
+        int oddBits=n&0x55555555;
+        evenBits>>=1;
+        oddBits<<=1;
+        System.out.print(oddBits | evenBits);
+        /* swap every 4 bits
+        int mask1 = 0xCCCCCCCC; // 11001100...
+    int mask2 = 0x33333333; // 00110011...
+    int group1 = n & mask1;
+    int group2 = n & mask2;
+    group1 >>= 2;
+    group2 <<= 2; */
+    
+    /*swap every 8 bits
+    int mask1 = 0xF0F0F0F0; // 11110000...
+    int mask2 = 0x0F0F0F0F; // 00001111...
+    int group1 = n & mask1;
+    int group2 = n & mask2;
+    group1 >>= 4;
+    group2 <<= 4;*/
+    
+    /* swap every 16 bits
+     int mask1 = 0xFFFF0000; // 1111111111111111 0000000000000000
+    int mask2 = 0x0000FFFF; // 0000000000000000 1111111111111111
+    int group1 = n & mask1;
+    int group2 = n & mask2;
+    group1 >>= 8;
+    group2 <<= 8;*/
+    }
+}-------------------------------------------------------------------------------
+bitswise and-ing and bitwse or-ing and bitwise xor-ing a range of array elements using prefix sum tehnique
+
+
+public class BitwiseAndPrefixSum {
+    public static void main(String[] args) {
+        int[] a = { 13, 11, 2, 3, 6 };
+        int L = 2, R = 4;
+        System.out.println("Bitwise AND from L to R: " + bitwiseAndUsingPrefixSum(a, L, R));
+    }
+
+    public static int bitwiseAndUsingPrefixSum(int[] a, int L, int R) {
+        int n = a.length;
+        int[][] prefixSum = new int[n + 1][32];
+
+        // Calculate prefix sum array
+        for (int i = 1; i <= n; i++) {
+            int num = a[i - 1];
+            for (int j = 0; j < 32; j++) {
+                prefixSum[i][j] = prefixSum[i - 1][j] + ((num >> j) & 1);
+            }
+        }
+
+        int result = 0;
+        for (int j = 0; j < 32; j++) {
+            int count = prefixSum[R][j] - prefixSum[L - 1][j];
+            if (count == (R - L + 1)) {
+                result |= (1 << j);
+            }
+        }
+
+        return result;
+    }
+}
+
+-------------------------------------------------------------------------------
+public class BitwiseOrPrefixSum {
+    public static void main(String[] args) {
+        int[] a = { 13, 11, 2, 3, 6 };
+        int L = 2, R = 4;
+        System.out.println("Bitwise OR from L to R: " + bitwiseOrUsingPrefixSum(a, L, R));
+    }
+
+    public static int bitwiseOrUsingPrefixSum(int[] a, int L, int R) {
+        int n = a.length;
+        int[][] prefixSum = new int[n + 1][32];
+
+        // Calculate prefix sum array
+        for (int i = 1; i <= n; i++) {
+            int num = a[i - 1];
+            for (int j = 0; j < 32; j++) {
+                prefixSum[i][j] = prefixSum[i - 1][j] + ((num >> j) & 1);
+            }
+        }
+
+        int result = 0;
+        for (int j = 0; j < 32; j++) {
+            int count = prefixSum[R][j] - prefixSum[L - 1][j];
+            if (count > 0) {
+                result |= (1 << j);
+            }
+        }
+
+        return result;
+    }
+}
+
+
+-------------------------------------------------------------------------------
+
+public class BitwiseXorPrefixSum {
+    public static void main(String[] args) {
+        int[] a = { 13, 11, 2, 3, 6 };
+        int L = 2, R = 4;
+        System.out.println("Bitwise XOR from L to R: " + bitwiseXorUsingPrefixSum(a, L, R));
+    }
+
+    public static int bitwiseXorUsingPrefixSum(int[] a, int L, int R) {
+        int n = a.length;
+        int[][] prefixSum = new int[n + 1][32];
+
+        // Calculate prefix sum array
+        for (int i = 1; i <= n; i++) {
+            int num = a[i - 1];
+            for (int j = 0; j < 32; j++) {
+                prefixSum[i][j] = prefixSum[i - 1][j] + ((num >> j) & 1);
+            }
+        }
+
+        int result = 0;
+        for (int j = 0; j < 32; j++) {
+            int count = prefixSum[R][j] - prefixSum[L - 1][j];
+            if (count % 2 != 0) {
+                result |= (1 << j);
+            }
+        }
+
+        return result;
+    }
+}
+
+-------------------------------------------------------------------------------
+import java.util.HashMap;
+import java.util.Map;
+
+public class LongestPalindromeSubstring {
+
+    public static int longestPalindromeSubstring(String s) {
+        Map<Integer, Integer> maskToIndex = new HashMap<>();
+        maskToIndex.put(0, -1); // to handle the case where the entire substring is a palindrome
+
+        int mask = 0;
+        int maxLength = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            mask ^= 1 << (c - 'a'); // toggle the bit for the character c
+
+            // Check if the current mask has been seen before
+            if (maskToIndex.containsKey(mask)) {
+                maxLength = Math.max(maxLength, i - maskToIndex.get(mask));
+            } else {
+                maskToIndex.put(mask, i);
+            }
+
+            // Check if we can form a palindrome by removing one character
+            for (int j = 0; j < 26; j++) {
+                int maskWithOneBitToggled = mask ^ (1 << j);
+                if (maskToIndex.containsKey(maskWithOneBitToggled)) {
+                    maxLength = Math.max(maxLength, i - maskToIndex.get(maskWithOneBitToggled));
+                }
+            }
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcbca";
+        System.out.println("The length of the longest substring that can be rearranged to form a palindrome is: " + longestPalindromeSubstring(s));
+    }
+}
+
+Efficient Approach: The idea is to observe that the string is a palindrome if at most one character occurs an odd number of times. So there is no need to keep the total count of each character. Just knowing that it is occurring even or an odd number of times is enough. To do this, use bit masking since the count of lowercase alphabets is only 26.
+1. Define a bitmask variable mask which tracks if the occurrence of each character is even or odd.
+2. Create a dictionary index that keeps track of the index of each bitmask.
+3. Traverse the given string S. First, convert the characters from 'a' - 'z' to 0 - 25 and store this value in a variable temp. For each occurrence of the character, take Bitwise XOR of 2temp with the mask.
+4. If the character occurs even number of times, its bit in the mask will be off else it will be on. If the mask is currently not in the index, simply assign present index i to bitmask mask in the index.
+5. If the mask is present in the index it means that from the index[mask] to i, the occurrence of all characters is even which is suitable for a palindromic substring. Therefore, update the answer if the length of this segment from the index[mask] to i is greater than the answer.
+6. To check for the substring with one character occurring an odd number of times, iterate a variable j over [0, 25]. Store Bitwise XOR of x with 2j in mask2.
+7. If mask2 is present in the index, this means that this character is occurring an odd number of times and all characters occur even a number of times in the segment index[mask2] to i, which is also a suitable condition for a palindromic string. Therefore, update our answer with the length of this substring if it is greater than the answer.
+8. Print the maximum length of substring after the above steps.
+
+
+-------------------------------------------------------------------------------
+subsue sum
+naive
+
+import java.util.*;
+class Main {
+    static boolean checkSum(int a[],int n,int t){
+        if(t==0) return true;
+        if(n==0) return false;
+        if(a[n-1]>t) checkSum(a,n-1,t);
+        return checkSum(a,n-1,t) || checkSum(a,n-1,t-a[n-1]);
+    }
+    public static void main(String[] args) {
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int a[]=new int[n];
+        for(int i=0;i<n;i++)
+        a[i]=sc.nextInt();
+        int t=sc.nextInt();
+        if(checkSum(a,n,t)){
+            System.out.print("true");
+        }
+        else{
+            System.out.print("false");
+        }
+    }
+}
+
+
+
+top down dp
+
+import java.util.*;
+
+class Main {
+    public static int checkSubset(int[] a, int n, int target, int[][] table) {
+        if (target == 0)
+            return 1;
+        if (n == 0)
+            return 0;
+        if (table[n][target] != -1)
+            return table[n][target];
+
+        table[n][target] = 0;
+
+        if (a[n - 1] > target)
+            return table[n][target] = checkSubset(a, n - 1, target, table);
+
+        if (checkSubset(a, n - 1, target, table) != 0 || checkSubset(a, n - 1, target - a[n - 1], table) != 0)
+            return table[n][target] = 1;
+        else
+            return table[n][target] = 0;
+    }
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+        int target = sc.nextInt();
+
+        int[][] table = new int[n + 1][target + 1];
+        for (int i = 0; i <= n; i++) {
+            Arrays.fill(table[i], -1);
+        }
+
+        if (checkSubset(a, n, target, table) != 0)
+            System.out.print("Yes");
+        else
+            System.out.print("No");
+        
+        sc.close();
+    }
+}
+-------------------------------------------------------------------------------
+bottom-up dp
+
+import java.util.*;
+
+class Main {
+    public static boolean checkSubset(int a[], int n, int target) {// O(nXtarget)
+
+        boolean table[][] = new boolean[n + 1][target + 1];
+        // Base cases
+        for (int i = 0; i <= n; i++) {
+            table[i][0] = true;
+        }
+        for (int i = 1; i <= target; i++) {
+            table[0][i] = false;
+        }
+        for (int i = 1; i <= n; i++) {// n
+            for (int j = 1; j <= target; j++) {// target
+                if (j < a[i - 1]) {
+                    table[i][j] = table[i - 1][j];
+
+                }
+                if (j >= a[i - 1]) {
+                    table[i][j] = table[i - 1][j] || table[i - 1][j - a[i - 1]];
+
+                }
+            }
+        }
+        return table[n][target];
+
+    }
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int a[] = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+
+        }
+        int target = sc.nextInt();
+        if (checkSubset(a, n, target) == true)
+            System.out.print("Yes");
+        else
+            System.out.print("No");
+    }
+}
+-------------------------------------------------------------------------------
+max sum from root to an ea dfs and dp with dfs
+
+// Definition of a binary tree node
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    
+    TreeNode(int val) {
+        this.val = val;
+        this.left = this.right = null;
+    }
+}
+
+public class MaxRootToLeafSum {
+
+    // Function to find the maximum sum from root to any leaf node
+    public int maxPathSum(TreeNode root) {
+        // Base case: If root is null, return 0
+        if (root == null) {
+            return 0;
+        }
+        
+        // Initialize a variable to store the maximum path sum
+        int[] maxSum = new int[]{Integer.MIN_VALUE};
+        
+        // Call the recursive helper function to find the maximum sum
+        maxPathSum(root, maxSum);
+        
+        return maxSum[0];
+    }
+    
+    // Helper function to recursively find the maximum sum path
+    private void maxPathSum(TreeNode node, int[] maxSum) {
+        // Base case: If node is null, return
+        if (node == null) {
+            return;
+        }
+        
+        // Update the maximum sum found so far
+        if (node.left == null && node.right == null) {
+            maxSum[0] = Math.max(maxSum[0], node.val);
+        }
+        
+        // Recursively calculate the maximum path sum for left and right subtrees
+        maxPathSum(node.left, maxSum);
+        maxPathSum(node.right, maxSum);
+        
+        // Update maxSum with the maximum path sum including current node
+        if (node.left != null) {
+            node.val = Math.max(node.val, node.val + node.left.val);
+        }
+        if (node.right != null) {
+            node.val = Math.max(node.val, node.val + node.right.val);
+        }
+        
+        // Update maxSum with the maximum path sum found so far
+        maxSum[0] = Math.max(maxSum[0], node.val);
+    }
+    
+    public static void main(String[] args) {
+        // Example usage:
+        // Construct a binary tree
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(15);
+        root.left.left = new TreeNode(2);
+        root.left.right = new TreeNode(7);
+        root.right.right = new TreeNode(20);
+        
+        MaxRootToLeafSum solution = new MaxRootToLeafSum();
+        int maxPathSum = solution.maxPathSum(root);
+        System.out.println("Maximum path sum from root to any leaf: " + maxPathSum);
+    }
+}
+
+-------------------------------------------------------------------------------
+import java.util.*;
+class Main {
+static int table[];
+Main(int n) {
+table= new int [n+ 1];
+
+}
+public int maxPathLength(int a[],Vector<Integer> AL[] ) {
+
+dfs(a, AL,1,0);// 1 is the root index, 0 means no parent to root node
+int result = table[1];
+return result;
+
+}
+public static void dfs( int a[],Vector<Integer> AL[],int u, int parent ) {
+table[u]= a[u-1];// table[1] = a[0], table[2] = a[1]
+int maxSum = 0;
+for(int kid: AL[u]) {
+// if kid is a parent then continue ahead
+if(kid == parent)
+continue;
+// go ahead with your dfs
+dfs(a, AL,kid,u);
+maxSum = Math.max(maxSum,table[kid]);
+
+}
+table[u]= table[u] + maxSum;
+
+}
+
+public static void main( String args[]) {
+Scanner sc = new Scanner ( System.in);
+int n = sc.nextInt();// no nodes / vertices
+Main obj = new Main(n);
+Vector<Integer> AL[] = new Vector[n + 1];// arrays(dynamic)
+for(int i = 0 ; i< n+1 ;i++) {
+AL[i] = new Vector<>();
+}
+// Undirected edges
+int e = sc.nextInt();
+for( int i = 0; i< e ; i++) {// u-----v
+int u = sc.nextInt();
+int v = sc.nextInt();
+AL[u].add(v);
+AL[v].add(u);
+}
+int a[]= new int[n];
+for(int i = 0; i<n ; i++) {// data at each node
+a[i] = sc.nextInt();
+
+}
+int maxPathValue = obj.maxPathLength(a, AL);
+System.out.print(maxPathValue);
+sc.close();
+
+}
+}
+-------------------------------------------------------------------------------
+max sum LC # 124 for binary, or n-ary
+
+import java.util.List;
+
+class Node {
+    int val;
+    List<Node> children;
+
+    public Node(int val, List<Node> children) {
+        this.val = val;
+        this.children = children;
+    }
+}
+
+import java.util.List;
+
+class Solution {
+    int max = Integer.MIN_VALUE;
+    
+    public int maxPathSum(Node root) {
+        int[] dp = new int[1]; // Array to hold the maximum path sum
+        
+        // Initialize the maximum path sum by calling the recursive helper function
+        dp[0] = util(root, dp);
+        
+        return dp[0];
+    }
+    
+    private int util(Node root, int[] dp) {
+        if (root == null)
+            return 0;
+        
+        int maxChild = 0;
+        for (Node child : root.children) {
+            maxChild = Math.max(maxChild, util(child, dp));
+        }
+        
+        int maxStraight = Math.max(maxChild + root.val, root.val);
+        int maxRoot = Math.max(maxStraight, maxChild + root.val);
+        
+        dp[0] = Math.max(dp[0], maxRoot); // Update the global max using DP array
+        
+        return maxStraight;
+    }
+}
+
+-------------------------------------------------------------------------------
+import java.util.*;
+//Count ways to select N pair of distinct balls of distinct colors
+public class Main
+{
+    //recursive - O(n!)
+    static int ways(int a[][],int n,int i,Set<Integer> set){
+        if(i==n) return 1;
+        int c=0;
+        for(int j=0;j<n;j++){
+            if(a[i][j]==1&&!set.contains(j)){
+                set.add(j);
+                c+=ways(a,n,i+1,set);
+                set.remove(j);
+            }
+        }
+        return c;
+    }
+    //dp 
+    static int ways_dp(int a[][], int n){
+        int dp[][] = new int[n + 1][1 << n];
+        //dp[i][j] represents ways to make i red balls and i blue balls
+        dp[0][0] = 1;
+        for(int i = 0; i < n; i++){
+            //j-permuatations of blue ball.
+            for(int j = 0; j < (1 << n); j++){
+                for(int k = 0; k < n; k++){
+                    //mask with k-bits set 
+                    int mask = 1<<k;
+                    if((mask & j) == 0 && a[i][k] == 1) {
+                        dp[i + 1][j | mask] = dp[i + 1][j | mask] + dp[i][j];
+                    }
+                }
+            }
+        }
+        return dp[n][(1<< n)-1];
+    }
+    //driver
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt();
+		int a[][]=new int[n][n];
+		for(int i=0;i<n;i++){
+		    for(int j=0;j<n;j++){
+		        a[i][j]=sc.nextInt();
+		    }
+		}
+		Set<Integer> set=new HashSet<>();
+		//System.out.print(ways(a,n,0,set));
+		System.out.print(ways_dp(a,n));
+	}
+}
+-------------------------------------------------------------------------------
+Given two integers s and d. The task is to find the smallest number such that the sum of its digits is s and the number of digits in the number are d. Return a string that is the smallest possible number. If it is not possible then return -1.
+Input: s = 9, d = 2
+Output: 18 
+Explanation: 18 is the smallest number possible with the sum of digits = 9 and total digits = 2.
+Input: s = 20, d = 3 
+Output: 299 
+Explanation: 299 is the smallest number possible with the sum of digits = 20 and total digits = 3.
+
+public class SmallestNumberWithSumAndDigits {
+    public static String smallestNumber(int s, int d) {
+        // If sum of digits is more than the maximum possible sum for the given number of digits
+        if (s > 9 * d) {
+            return "-1";
+        }
+        
+        // Create an array to store the digits of the result number
+        int[] digits = new int[d];
+        
+        // Start filling the digits from the least significant digit (rightmost)
+        for (int i = d - 1; i >= 0; i--) {
+            if (s > 9) {
+                digits[i] = 9;
+                s -= 9;
+            } else {
+                digits[i] = s;
+                s = 0;
+            }
+        }
+        
+        // Ensure the number is the smallest possible by handling leading zeros
+        // Move the non-zero part of the number to the leftmost side
+        // Special handling for the case when the leading digit is zero
+        if (digits[0] == 0) {
+            for (int i = 1; i < d; i++) {
+                if (digits[i] > 0) {
+                    digits[i]--;
+                    digits[0] = 1;
+                    break;
+                }
+            }
+        }
+        
+        // Convert the digits array to a string
+        StringBuilder result = new StringBuilder();
+        for (int digit : digits) {
+            result.append(digit);
+        }
+        
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(smallestNumber(9, 2)); // Output: 18
+        System.out.println(smallestNumber(20, 3)); // Output: 299
+        System.out.println(smallestNumber(28, 4)); // Output: 2999
+        System.out.println(smallestNumber(10, 2)); // Output: 19
+    }
+}
+
+-------------------------------------------------------------------------------
+GAME THEORY
+
+import java.util.*;
+public class Main
+{
+    static void winner(int a[],int n){
+        int removeX=0,removeY=0,removeXY=0;
+        for(int i=0;i<n;i++) {
+            if(a[i]%3==0 && a[i]%5 == 0){
+                removeXY++;
+            }
+            else if(a[i]%3==0){
+                removeX++;
+            }
+            else if(a[i]%5==0){
+                removeY++;
+            }
+        }
+            if(removeXY==0) {
+                if(removeX>removeY){
+                    System.out.print("X winner");
+                }
+                else{
+                    System.out.print("Y winner");
+                }
+            }
+            else{
+                if(removeX>=removeY){
+                    System.out.print("X winner");
+                }
+                else{
+                    System.out.print("Y winner");
+                }
+            }
+    }
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt();
+		int a[]=new int[n];
+		for(int i=0;i<n;i++)
+		a[i]=sc.nextInt();
+		winner(a,n);
+	}
+}
+-------------------------------------------------------------------------------
+//game theory dp
+import java.util.*;
+public class Main
+{
+    static int d,k;
+    static int solution(int i,int j,int table[][]){
+        int res=1;
+        if(table[i][j]!=-1){
+            return table[i][j];
+        }
+        int x=((i+k)*(i+k))+(j*j);
+        int y=(i*i)+((j+k)*(j+k));
+        if(x<=d*d){
+            res=res&solution(i+k,j,table);
+        }
+        if(y<=d*d){
+            res=res&solution(i,j+k,table);
+        }
+        if(res==0){
+            table[i][j]=1;
+            return table[i][j];
+        }
+        table[i][j]=0;
+        return table[i][j];
+    }
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		d=sc.nextInt();
+		k=sc.nextInt();
+		int table[][]=new int[d*d+1][d*d+1];
+		for(int i[]:table){
+		    Arrays.fill(i,-1);
+		}
+		int res=solution(0,0,table);
+		if(res==1){
+		    System.out.print("X winner");
+		}
+		else{
+		    System.out.print("Y winner");
+		}
+	}
+}
+-------------------------------------------------------------------------------
+/******************************************************************************
+
+                            Online Java Compiler.
+                Code, Compile, Run and Debug java program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+import java.util.*;
+public class Main
+{
+    static boolean collinear(int x1,int y1,int x2,int y2,int x3, int y3){
+        return x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2) == 0;
+    }
+    static boolean collinear2(int x1,int y1,int x2,int y2,int x3, int y3){
+        return (y2-y1)*(x3-x2)==(y3-y2)*(x2-x1);
+    }
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int x1=sc.nextInt();
+		int y1=sc.nextInt();
+		int x2=sc.nextInt();
+		int y2=sc.nextInt();
+		int x3=sc.nextInt();
+		int y3=sc.nextInt();
+		if(collinear(x1,y1,x2,y2,x3,y3)){
+		    System.out.println("collinear");
+		}
+		else{
+		    System.out.println("not collinear");
+		}
+		if(collinear2(x1,y1,x2,y2,x3,y3)){
+		    System.out.println("collinear");
+		}
+		else{
+		    System.out.println("not collinear");
+		}
+	}
+}
+-------------------------------------------------------------------------------
+java
+
+Write a Java program to create a class called Employee with methods called work() and getSalary(). Create a subclass called HRManager that overrides the work() method and adds a new method called addEmployee().
+
+Write a program to convert from upper case to lower case and vice versa of an alphabet and print the old character and new character as shown in example (Ex: a->A, M->m)
+Write a program to initialize an integer array and print the sum and average of the array
+
+Write a program to initialize an integer array with values and check if a given number is present in the array or not. If the number is not found, it will print -1 else it will print the index value of the given number in the array Ex1) Array elements are {1,4,34,56,7} and the search element is 90 O/P: -1 Ex2)Array elements are {1,4,34,56,7} and the search element is 56 O/P: 4
+Create a class Box that uses a parameterized method to initialize the dimensions of a box.(dimensions are width, height, depth of double type). The class should have a method that canreturn volume. Obtain an object and print the corresponding volume in main() function
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+https://code.letuscrack.com/zig-zag-traversal-from-bottom/
+
+https://code.letuscrack.com/letuscrack/pattern-printing-diamond-numbers/
+
+https://code.letuscrack.com/dole-out-cadbury-tcs-codevita/
+
+https://code.letuscrack.com/musical-bench/
+
+https://code.letuscrack.com/letuscrack/multi-layered-diamond-shaped-rhombus-pattern/
+
+
+
+
+
+
+
+
+
+
